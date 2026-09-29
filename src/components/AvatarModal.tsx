@@ -18,18 +18,32 @@ interface AvatarPreset {
 
 const PRESET_AVATARS: AvatarPreset[] = [
   {
+    id: 'master-leng-avatar',
+    name: '林师父本人真实头像 (Master Leng Eng Chee)',
+    roleHint: '应用创始人 · 领衔导师',
+    url: '/leng_master_avatar.jpg',
+    description: '官网原图裁剪：手持罗盘，身穿红金传统服饰温和正气真容',
+  },
+  {
+    id: 'master-leng-cutout',
+    name: '林师父手持罗盘全身立像 (官网真照)',
+    roleHint: '创办人官方透底真容',
+    url: '/founder-cutout.png',
+    description: '来自林师父官网 founder-cutout.png 高清去背真像',
+  },
+  {
     id: 'master-tang-square',
-    name: '郑道长 (Master Raymond Tang)',
-    roleHint: '首席风水命理名师 · 法相',
-    url: '/master_avatar.jpg',
-    description: '身着传统正红金龙刺绣道袍，手执罗盘与吉祥铜钱穗',
+    name: 'Master Raymond Tang (郑道长)',
+    roleHint: '特邀资深勘测顾问',
+    url: '/raymond_tang_avatar.jpg',
+    description: '深蓝云纹道袍，银须德高望重老道长法相',
   },
   {
     id: 'master-tang-portrait',
-    name: '郑道长 (道袍立像 · 全身)',
-    roleHint: '执业风水名师 · 权威肖像',
-    url: '/master_portrait.jpg',
-    description: '三元玄空传人，正统法相',
+    name: 'Master Raymond Tang (道袍立像)',
+    roleHint: '资深堪舆顾问 · 联合审定',
+    url: '/raymond_tang_portrait.jpg',
+    description: '执持纯铜风水罗盘，玄学古籍背景',
   },
   {
     id: 'client-female',

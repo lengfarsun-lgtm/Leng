@@ -789,14 +789,14 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
           <div className="flex items-center gap-space-md">
             <div className="relative shrink-0">
               <img
-                alt="Master Raymond Tang"
+                alt="林师父 (Master Leng Eng Chee)"
                 className="w-16 h-16 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
-                src="/master_avatar.jpg"
+                src="/leng_master_avatar.jpg"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-surface-container-lowest p-0.5 shadow-sm border border-border-subtle">
                 <img
-                  alt="Master Cinnabar Seal"
+                  alt="林师父朱砂法印"
                   className="w-full h-full rounded-full object-contain"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqam0W-zRTj4-fCuBG9jIhappKI849zMAEDZ7khiaIcPOM3qtC91Lm30N8NRYh1EFzjWbE5Tj4IMbfjigk7BKDqRVEsAyLmS5IZ73XqkVsefxef2coOiERBCFEe8keBhcVBoAnWsJgP_D-a44MqZERdo2jkoT-s0Pu8adYfypeoHExe7d9pTIqRjxWDWbY3AW9k5aOPyb7qM_UCYwtKzw1EcXxNZdcgfSEghiiig5iTrng-mJHSWirGw"
                   referrerPolicy="no-referrer"
@@ -806,14 +806,14 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="font-headline-sm text-headline-sm font-bold text-text-primary">
-                  {report.approvedBy || 'Master Raymond Tang (郑道长 · 执业大师签发)'}
+                  {report.approvedBy || '林师父 (Master Leng Eng Chee · 创办人亲核签发)'}
                 </span>
                 <span className="px-2 py-0.5 rounded bg-surface-container-highest font-label-sm text-label-sm text-on-surface text-xs font-semibold">
-                  {report.masterLicense || 'Lic. MY-FS-8812'}
+                  {report.masterLicense || 'Lic. MY-MLK-8812'}
                 </span>
               </div>
               <span className="font-body-sm text-body-sm text-on-surface-variant text-xs">
-                马来西亚三元地理研学院常务理事 · 审核生效时间: {report.approvedDate || '2026-09-29 18:00 (KL Time)'}
+                紫微斗数与三元玄空 · “知命而行，安心而居” · 马六甲实体驻所核定生效
               </span>
             </div>
           </div>
@@ -822,6 +822,14 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
               <span className="material-symbols-outlined text-sm">lock</span>
               <span>Zero-Knowledge Encrypted Assessment</span>
             </div>
+            <a
+              href="https://founder-profile-gold.lengengchee.chatgpt.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-element-fire hover:underline flex items-center gap-1 font-medium"
+            >
+              <span>林师父官方介绍与预约 ↗</span>
+            </a>
             <span className="font-label-sm text-label-sm text-text-muted font-mono text-[11px]">
               {report.sha256Verification}
             </span>

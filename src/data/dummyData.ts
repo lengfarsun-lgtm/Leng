@@ -4,18 +4,18 @@ import { calculateFourPillars, getDefaultElementWeights, getDefaultLuckPillars }
 export const DEMO_USERS: Record<string, AppUser> = {
   owner: {
     uid: 'demo-user-owner',
-    email: 'raymond.tang@metavox.my',
-    displayName: 'Master Raymond Tang (郑道长 · Owner)',
+    email: 'lengfarsun@gmail.com',
+    displayName: '林师父 (Master Leng Eng Chee · 创始人)',
     role: 'owner',
-    photoURL: '/master_avatar.jpg',
+    photoURL: '/leng_master_avatar.jpg',
     isDemo: true,
   },
   management: {
     uid: 'demo-user-mgmt',
-    email: 'master.lam@metavox.my',
-    displayName: 'Master Lam (林大师 · Management)',
+    email: 'raymond.tang@metavox.my',
+    displayName: 'Master Raymond Tang (郑道长 · 资深顾问)',
     role: 'management',
-    photoURL: '/master_avatar.jpg',
+    photoURL: '/raymond_tang_avatar.jpg',
     isDemo: true,
   },
   logistic: {

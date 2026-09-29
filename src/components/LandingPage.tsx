@@ -179,16 +179,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
               <div className="flex items-center gap-space-sm pt-space-xs border-t border-white/10">
                 <img
                   className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-accent-gold-bright"
-                  alt="Master Raymond Tang"
-                  src="/master_avatar.jpg"
+                  alt="林师父 (Master Leng Eng Chee)"
+                  src="/leng_master_avatar.jpg"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
                   <span className="font-label-md text-label-md text-surface-base font-semibold">
-                    Master Raymond Tang (郑道长)
+                    林师父 (Master Leng Eng Chee · 创始人)
                   </span>
                   <span className="font-label-sm text-label-sm text-surface-muted text-xs">
-                    Lead Geomancer · Malaysian Feng Shui Society Board
+                    紫微斗数 · 居家风水 · “知命而行，安心而居”
                   </span>
                 </div>
                 <span className="material-symbols-outlined ml-auto text-accent-gold-bright text-2xl">
@@ -626,55 +626,107 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
             </div>
           </div>
 
-          {/* Master Geomancer Authority Showcase Feature */}
-          <div className="rounded-3xl bg-gradient-to-br from-surface-warm via-surface-base to-surface-container-high/40 p-space-lg md:p-space-xl border border-border-subtle shadow-md flex flex-col lg:flex-row items-center gap-space-xl">
+          {/* Founder Master Leng Eng Chee Authority Showcase */}
+          <div className="rounded-3xl bg-gradient-to-br from-surface-warm via-surface-base to-accent-gold-bright/10 p-space-lg md:p-space-xl border-2 border-accent-gold-bright/40 shadow-lg flex flex-col lg:flex-row items-center gap-space-xl">
             <div className="relative shrink-0 group">
-              <div className="w-56 md:w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-xl ring-2 ring-accent-gold-bright/60">
+              <div className="w-56 md:w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-accent-gold-bright bg-gradient-to-b from-[#251b18] via-[#1a1311] to-[#0e0c0b] flex items-end justify-center relative p-1.5">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-transparent pointer-events-none" />
                 <img
-                  src="/master_portrait.jpg"
-                  alt="Master Raymond Tang 郑道长"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src="/founder-cutout.png"
+                  alt="林师父手持罗盘真实照片 (Master Leng Eng Chee)"
+                  className="w-full h-full object-contain object-bottom group-hover:scale-105 transition-transform duration-500 filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)]"
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <div className="absolute -bottom-3 -right-3 bg-element-fire text-on-primary px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
+              <div className="absolute -bottom-3 -right-3 bg-element-fire text-on-primary px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1 ring-2 ring-white">
                 <span className="material-symbols-outlined text-sm">verified</span>
-                执业风水名师
+                馆主 · 创办人
               </div>
             </div>
 
             <div className="flex flex-col gap-space-sm flex-1 text-left">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-accent-gold-bright/20 text-secondary font-label-sm text-label-sm font-bold text-xs uppercase tracking-wider">
-                  Lead Geomancy Consultant · 领衔大师
+                <span className="px-3 py-1 rounded-full bg-element-fire text-on-primary font-label-sm text-label-sm font-bold text-xs uppercase tracking-wider shadow-xs">
+                  Founder & Principal Geomancer · 创办人领衔
                 </span>
-                <span className="text-text-muted text-xs font-mono">
-                  San Yuan Xuan Kong Heritage · 三元玄空传人
+                <span className="text-secondary font-semibold text-xs font-mono px-2.5 py-0.5 rounded-full bg-accent-gold-bright/20 border border-accent-gold-bright/30">
+                  紫微斗数 · 居家风水 · 三元玄空
                 </span>
               </div>
 
-              <h3 className="font-headline-md text-headline-sm md:text-headline-md text-text-primary font-bold">
-                Master Raymond Tang (郑道长)
+              <h3 className="font-headline-md text-headline-sm md:text-headline-md text-text-primary font-bold flex items-center gap-2">
+                <span>林师父 (Master Leng Eng Chee)</span>
               </h3>
 
+              <div className="p-3 bg-surface-container-low/80 rounded-xl border border-border-subtle/80 text-sm font-medium text-text-primary italic">
+                “知命而行，安心而居。听得懂，心才会定。”
+              </div>
+
               <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                马来西亚易经风水协会理事、三元玄空飞星正宗传承。精研三元九运离火大局、真太阳时天文学经度推算及当代高层阳宅纳气理气。每一份八字命盘与阳宅方案均经过 Gemini 算法深度推演与大师亲笔复核双轨把关，确保合乎周易天理与生活实用。
+                本应用创办人林师父驻所马来西亚马六甲，深耕紫微斗数命盘推演与现代居家纳气环境学。坚持用平实质朴、切中生活的语言解析命理玄机，拒绝故弄玄虚与繁琐强迫，引导每一位有缘人厘清人生关键抉择、构建舒适宜居的能量磁场。
               </p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 border-t border-border-subtle/60 text-xs">
-                <div className="flex items-center gap-1.5 text-text-primary font-medium">
-                  <span className="material-symbols-outlined text-element-fire text-base">military_tech</span>
-                  <span>执业风水勘测 25+ 年</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-border-subtle/60 text-xs">
+                <div className="flex items-center gap-1.5 text-text-primary">
+                  <span className="material-symbols-outlined text-element-fire text-base">location_on</span>
+                  <span>驻所: 27, Jalan AP10, Taman Ara Permai, Batu Berendam, Melaka</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-text-primary font-medium">
-                  <span className="material-symbols-outlined text-element-earth text-base">explore</span>
-                  <span>三元玄空罗盘精准定向</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-text-primary font-medium">
-                  <span className="material-symbols-outlined text-element-water text-base">task_alt</span>
-                  <span>吉隆坡及全马逾千企业客户</span>
+                <div className="flex items-center gap-1.5 text-text-primary">
+                  <span className="material-symbols-outlined text-element-earth text-base">chat</span>
+                  <span>WhatsApp: <a href="https://wa.me/60165205364" target="_blank" rel="noopener noreferrer" className="text-element-fire font-bold hover:underline">016-520 5364</a></span>
                 </div>
               </div>
+
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <a
+                  href="https://founder-profile-gold.lengengchee.chatgpt.site/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-highest hover:bg-surface-container text-text-primary font-label-md text-xs font-semibold border border-border-subtle hover:border-element-fire transition-all shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-sm text-element-fire">public</span>
+                  <span>访问创办人林师父官方介绍页 ↗</span>
+                </a>
+                <a
+                  href="https://wa.me/60165205364"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary-container hover:bg-element-fire text-on-primary font-label-md text-xs font-semibold transition-all shadow-xs"
+                >
+                  <span className="material-symbols-outlined text-sm">chat</span>
+                  <span>直接 WhatsApp 预约林师父</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Distinguished Senior Consultant Master Raymond Tang Showcase (Different Person) */}
+          <div className="rounded-2xl bg-surface-base p-space-md md:p-space-lg border border-border-subtle flex flex-col md:flex-row items-center gap-space-lg">
+            <div className="relative shrink-0">
+              <div className="w-28 md:w-32 aspect-square rounded-2xl overflow-hidden shadow-md ring-2 ring-primary-container/40">
+                <img
+                  src="/raymond_tang_portrait.jpg"
+                  alt="Master Raymond Tang 郑道长"
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="absolute -bottom-2 -right-2 bg-primary-container text-on-primary px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs">
+                特邀顾问
+              </div>
+            </div>
+            <div className="flex flex-col gap-1 text-left flex-1">
+              <div className="flex items-center gap-2">
+                <span className="font-headline-sm text-sm font-bold text-text-primary">
+                  Master Raymond Tang (郑道长)
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-[10px] font-semibold text-text-muted">
+                  三元玄空飞星第24代传人 · 特邀资深顾问
+                </span>
+              </div>
+              <p className="font-body-sm text-xs text-text-muted leading-relaxed">
+                精研三元九运离火大局与真太阳时天文学经度推算，与林师父联合复核把关排盘算法与高层阳宅纳气逻辑，确保每份测算兼备古法严谨与现代算法精准。
+              </p>
             </div>
           </div>
 

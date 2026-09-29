@@ -47,8 +47,8 @@ export const ManagementDashboard: React.FC<ManagementDashboardProps> = ({
         <div className="flex items-center gap-space-sm">
           <div className="relative shrink-0">
             <img
-              src="/master_avatar.jpg"
-              alt="Master Raymond Tang"
+              src="/leng_master_avatar.jpg"
+              alt="林师父 (Master Leng Eng Chee)"
               className="w-11 h-11 rounded-full object-cover shadow-xs ring-2 ring-accent-gold-bright"
               referrerPolicy="no-referrer"
             />
@@ -59,14 +59,14 @@ export const ManagementDashboard: React.FC<ManagementDashboardProps> = ({
           <div className="flex flex-col">
             <div className="flex items-center gap-space-xs">
               <span className="font-headline-sm text-headline-sm text-text-primary font-semibold">
-                METAVOX 综合运营协同中枢
+                林师父 · METAVOX 综合运营协同中枢
               </span>
               <span className="font-label-sm text-label-sm px-space-xs py-0.5 rounded-full bg-element-fire/15 text-element-fire font-semibold text-xs">
                 INTERNAL OPS
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-on-surface-variant text-xs">
-              Master Raymond Tang (郑道长), Management & Logistics Workspace · PRD Sec 2 & 5.6-5.8
+              创办人林师父 (Master Leng Eng Chee) 驻所协同 · 特邀顾问 Master Raymond Tang (郑道长) 联合运营
             </p>
           </div>
         </div>

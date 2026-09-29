@@ -64,9 +64,23 @@ export const Footer: React.FC<FooterProps> = ({ currentRole, onSwitchRole }) => 
             </div>
           </div>
 
-          <div className="flex items-center gap-space-xs font-label-sm text-label-sm text-on-surface-variant text-xs">
-            <span className="material-symbols-outlined text-sm text-primary-container">location_on</span>
-            <span>The Boulevard, Mid Valley City, 59200 Kuala Lumpur, Malaysia</span>
+          <div className="flex flex-wrap items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant text-xs">
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-sm text-primary-container">location_on</span>
+              <span>马六甲驻所: 27, Jalan AP10, Taman Ara Permai, Batu Berendam, 75350 Melaka</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-sm text-element-fire">chat</span>
+              <a href="https://wa.me/60165205364" target="_blank" rel="noopener noreferrer" className="hover:text-element-fire underline font-semibold">
+                WhatsApp: 016-520 5364
+              </a>
+            </div>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-sm text-secondary">public</span>
+              <a href="https://founder-profile-gold.lengengchee.chatgpt.site/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary underline font-semibold">
+                创办人官方介绍页 (Founder Profile) ↗
+              </a>
+            </div>
           </div>
         </div>
 
@@ -75,16 +89,17 @@ export const Footer: React.FC<FooterProps> = ({ currentRole, onSwitchRole }) => 
           <div className="flex flex-col gap-space-xs">
             <div className="flex items-center gap-space-xs">
               <img
-                alt="Feng Shui BaZi Logo"
-                className="h-6 w-auto object-contain"
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UyTBbueriFExUOqeEFmnRiCe5j1uVIDlpIUOPR873qWCDIlgAX2dpbmeOL1bceYQL0BuxcVCIuR_3kwFfhcbGtr6kPXtf-0vX8gY0IC4oLkvOLVtg58K-K2vYGR3GRytMax8nkmEmlfEtQTlg16hlAC03YpFaOIiiqUgnkRb-UjXu9KqQV3UgNmvoFYLCRFs6y_Ppg47B6SvjKgiewlkjxXSoz0RX5klPsvPh6mi9gB33DYBl6ZGf80kVq"
+                alt="林师父 (Master Leng Eng Chee)"
+                className="w-8 h-8 rounded-full object-cover ring-2 ring-accent-gold-bright"
+                src="/leng_master_avatar.jpg"
+                referrerPolicy="no-referrer"
               />
               <span className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-                METAVOX MY
+                林师父 · METAVOX
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-              Architectural Geomancy & Contemporary BaZi Wealth Dynamics. Grounded in Classical San Yuan Flying Stars and Computational Four Pillars metaphysics.
+              创办人林师父 (Master Leng Eng Chee) 主理。紫微斗数、四柱八字与现代居家风水环境学。“知命而行，安心而居。”
             </p>
           </div>
 

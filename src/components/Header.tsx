@@ -38,22 +38,34 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-margin-mobile lg:px-margin pt-4 pointer-events-none">
       <div className="pointer-events-auto w-full max-w-[1280px] h-20 bg-surface-container-lowest/90 backdrop-blur-2xl rounded-full shadow-[0_4px_24px_rgba(10,10,12,0.06)] border border-border-subtle/60 flex items-center justify-between px-space-lg transition-all relative">
-        {/* Left: Brand Monogram & Title */}
+        {/* Left: Brand Monogram & Title with Founder Master Leng Avatar */}
         <div
-          className="flex items-center gap-space-sm cursor-pointer select-none"
+          className="flex items-center gap-space-sm cursor-pointer select-none group"
           onClick={() => onNavigate('home')}
         >
-          <img
-            alt="Feng Shui BaZi Logo"
-            className="h-8 w-auto object-contain"
-            src="https://lh3.googleusercontent.com/aida/AEtjO1UyTBbueriFExUOqeEFmnRiCe5j1uVIDlpIUOPR873qWCDIlgAX2dpbmeOL1bceYQL0BuxcVCIuR_3kwFfhcbGtr6kPXtf-0vX8gY0IC4oLkvOLVtg58K-K2vYGR3GRytMax8nkmEmlfEtQTlg16hlAC03YpFaOIiiqUgnkRb-UjXu9KqQV3UgNmvoFYLCRFs6y_Ppg47B6SvjKgiewlkjxXSoz0RX5klPsvPh6mi9gB33DYBl6ZGf80kVq"
-          />
+          <div className="relative shrink-0">
+            <img
+              alt="林师父 (Master Leng Eng Chee)"
+              className="w-12 h-12 rounded-full object-cover shadow-[0_2px_12px_rgba(235,94,40,0.35)] ring-2 ring-accent-gold-bright group-hover:scale-105 transition-all"
+              src="/leng_master_avatar.jpg"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-element-fire text-on-primary flex items-center justify-center text-[9px] shadow-sm ring-1 ring-white">
+              <span className="material-symbols-outlined text-[10px]">verified</span>
+            </div>
+          </div>
           <div className="flex flex-col">
-            <span className="font-headline-sm text-headline-sm leading-tight tracking-tight text-on-surface font-semibold">
-              METAVOX
-            </span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider text-[11px]">
-              风水工具 · METAVOX MY
+            <div className="flex items-center gap-1.5">
+              <span className="font-headline-sm text-headline-sm leading-tight tracking-tight text-on-surface font-bold group-hover:text-element-fire transition-colors">
+                林师父 · 风水工具
+              </span>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 rounded bg-accent-gold-bright/20 text-secondary font-bold text-[10px] tracking-wide">
+                METAVOX
+              </span>
+            </div>
+            <span className="font-label-sm text-label-sm text-on-surface-variant tracking-wider text-[11px] flex items-center gap-1">
+              <span>Master Leng · 紫微八字 · 居家风水</span>
+              <span className="hidden md:inline text-accent-gold-bright text-[10px]">· 马六甲</span>
             </span>
           </div>
         </div>
@@ -90,6 +102,14 @@ export const Header: React.FC<HeaderProps> = ({
           >
             排盘结果 Report
           </button>
+          <a
+            href="https://founder-profile-gold.lengengchee.chatgpt.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-space-md py-1.5 transition-colors font-label-md text-label-md rounded-full text-on-surface-variant hover:text-element-fire flex items-center gap-1 hover:bg-surface-container"
+          >
+            <span>创办人简介 ↗</span>
+          </a>
           <button
             onClick={() => onNavigate('ops')}
             className={`px-space-md py-1.5 transition-colors font-label-md text-label-md rounded-full flex items-center gap-1 ${
@@ -348,6 +368,16 @@ export const Header: React.FC<HeaderProps> = ({
           >
             排盘结果 Report
           </button>
+          <a
+            href="https://founder-profile-gold.lengengchee.chatgpt.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-left px-3 py-2 rounded-lg hover:bg-surface-container font-label-md text-label-md text-element-fire font-semibold flex items-center justify-between"
+          >
+            <span>创办人简介 (Master Leng Profile)</span>
+            <span className="material-symbols-outlined text-sm">open_in_new</span>
+          </a>
           <button
             onClick={() => {
               onNavigate('ops');

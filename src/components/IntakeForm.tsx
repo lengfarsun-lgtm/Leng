@@ -1261,20 +1261,20 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
               {/* Practitioner Assignee Preview Card */}
               <div className="flex items-center gap-space-md bg-surface-container-low p-space-sm rounded-xl border border-border-subtle/50">
                 <img
-                  alt="Master Kenneth Tan"
+                  alt="林师父 (Master Leng Eng Chee)"
                   className="w-14 h-14 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
-                  src="/master_avatar.jpg"
+                  src="/leng_master_avatar.jpg"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col min-w-0">
                   <span className="font-label-sm text-label-sm text-text-muted text-[10px]">
-                    CHIEF CONSULTANT ASSIGNMENT
+                    PRINCIPAL GEOMANCY CONSULTATION
                   </span>
                   <span className="font-label-md text-label-md font-bold text-text-primary truncate">
-                    Master Raymond Tang (郑道长 · 首席勘测大师)
+                    林师父 (Master Leng Eng Chee · 创办人亲测)
                   </span>
                   <span className="font-label-sm text-label-sm text-element-earth text-xs">
-                    三元玄空飞星第24代传人 · METAVOX 首席顾问
+                    紫微斗数 · 居家风水 · “知命而行，安心而居”
                   </span>
                 </div>
               </div>
