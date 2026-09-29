@@ -179,13 +179,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
               <div className="flex items-center gap-space-sm pt-space-xs border-t border-white/10">
                 <img
                   className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-accent-gold-bright"
-                  alt="林师父 (Master Leng Eng Chee)"
+                  alt="Master Leng"
                   src="/leng_master_avatar.jpg"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
                   <span className="font-label-md text-label-md text-surface-base font-semibold">
-                    林师父 (Master Leng Eng Chee · 创始人)
+                    Master Leng (创始人 · Founder)
                   </span>
                   <span className="font-label-sm text-label-sm text-surface-muted text-xs">
                     紫微斗数 · 居家风水 · “知命而行，安心而居”
@@ -626,14 +626,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
             </div>
           </div>
 
-          {/* Founder Master Leng Eng Chee Authority Showcase */}
+          {/* Founder Master Leng Authority Showcase */}
           <div className="rounded-3xl bg-gradient-to-br from-surface-warm via-surface-base to-accent-gold-bright/10 p-space-lg md:p-space-xl border-2 border-accent-gold-bright/40 shadow-lg flex flex-col lg:flex-row items-center gap-space-xl">
             <div className="relative shrink-0 group">
               <div className="w-56 md:w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-accent-gold-bright bg-gradient-to-b from-[#251b18] via-[#1a1311] to-[#0e0c0b] flex items-end justify-center relative p-1.5">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/20 via-transparent to-transparent pointer-events-none" />
                 <img
                   src="/founder-cutout.png"
-                  alt="林师父手持罗盘真实照片 (Master Leng Eng Chee)"
+                  alt="Master Leng 手持罗盘真实照片"
                   className="w-full h-full object-contain object-bottom group-hover:scale-105 transition-transform duration-500 filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)]"
                   referrerPolicy="no-referrer"
                 />
@@ -655,7 +655,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
               </div>
 
               <h3 className="font-headline-md text-headline-sm md:text-headline-md text-text-primary font-bold flex items-center gap-2">
-                <span>林师父 (Master Leng Eng Chee)</span>
+                <span>Master Leng</span>
               </h3>
 
               <div className="p-3 bg-surface-container-low/80 rounded-xl border border-border-subtle/80 text-sm font-medium text-text-primary italic">
@@ -663,7 +663,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
               </div>
 
               <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-                本应用创办人林师父驻所马来西亚马六甲，深耕紫微斗数命盘推演与现代居家纳气环境学。坚持用平实质朴、切中生活的语言解析命理玄机，拒绝故弄玄虚与繁琐强迫，引导每一位有缘人厘清人生关键抉择、构建舒适宜居的能量磁场。
+                本应用创办人 Master Leng 驻所马来西亚马六甲，深耕紫微斗数命盘推演与现代居家纳气环境学。坚持用平实质朴、切中生活的语言解析命理玄机，拒绝故弄玄虚与繁琐强迫，引导每一位有缘人厘清人生关键抉择、构建舒适宜居的能量磁场。
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-border-subtle/60 text-xs">
@@ -685,7 +685,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-surface-container-highest hover:bg-surface-container text-text-primary font-label-md text-xs font-semibold border border-border-subtle hover:border-element-fire transition-all shadow-xs"
                 >
                   <span className="material-symbols-outlined text-sm text-element-fire">public</span>
-                  <span>访问创办人林师父官方介绍页 ↗</span>
+                  <span>访问创办人 Master Leng 官方介绍页 ↗</span>
                 </a>
                 <a
                   href="https://wa.me/60165205364"
@@ -694,7 +694,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary-container hover:bg-element-fire text-on-primary font-label-md text-xs font-semibold transition-all shadow-xs"
                 >
                   <span className="material-symbols-outlined text-sm">chat</span>
-                  <span>直接 WhatsApp 预约林师父</span>
+                  <span>直接 WhatsApp 预约 Master Leng</span>
                 </a>
               </div>
             </div>

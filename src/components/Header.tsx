@@ -45,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <div className="relative shrink-0">
             <img
-              alt="林师父 (Master Leng Eng Chee)"
+              alt="Master Leng"
               className="w-12 h-12 rounded-full object-cover shadow-[0_2px_12px_rgba(235,94,40,0.35)] ring-2 ring-accent-gold-bright group-hover:scale-105 transition-all"
               src="/leng_master_avatar.jpg"
               referrerPolicy="no-referrer"
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span className="font-headline-sm text-headline-sm leading-tight tracking-tight text-on-surface font-bold group-hover:text-element-fire transition-colors">
-                林师父 · 风水工具
+                Master Leng · 风水工具
               </span>
               <span className="hidden sm:inline-block px-1.5 py-0.5 rounded bg-accent-gold-bright/20 text-secondary font-bold text-[10px] tracking-wide">
                 METAVOX

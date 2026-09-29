@@ -89,17 +89,17 @@ export const Footer: React.FC<FooterProps> = ({ currentRole, onSwitchRole }) => 
           <div className="flex flex-col gap-space-xs">
             <div className="flex items-center gap-space-xs">
               <img
-                alt="林师父 (Master Leng Eng Chee)"
+                alt="Master Leng"
                 className="w-8 h-8 rounded-full object-cover ring-2 ring-accent-gold-bright"
                 src="/leng_master_avatar.jpg"
                 referrerPolicy="no-referrer"
               />
               <span className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-                林师父 · METAVOX
+                Master Leng · METAVOX
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-              创办人林师父 (Master Leng Eng Chee) 主理。紫微斗数、四柱八字与现代居家风水环境学。“知命而行，安心而居。”
+              创办人 Master Leng 主理。紫微斗数、四柱八字与现代居家风水环境学。“知命而行，安心而居。”
             </p>
           </div>
 

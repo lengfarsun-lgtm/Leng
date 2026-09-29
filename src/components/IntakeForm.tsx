@@ -1261,7 +1261,7 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
               {/* Practitioner Assignee Preview Card */}
               <div className="flex items-center gap-space-md bg-surface-container-low p-space-sm rounded-xl border border-border-subtle/50">
                 <img
-                  alt="林师父 (Master Leng Eng Chee)"
+                  alt="Master Leng"
                   className="w-14 h-14 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
                   src="/leng_master_avatar.jpg"
                   referrerPolicy="no-referrer"
@@ -1271,7 +1271,7 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
                     PRINCIPAL GEOMANCY CONSULTATION
                   </span>
                   <span className="font-label-md text-label-md font-bold text-text-primary truncate">
-                    林师父 (Master Leng Eng Chee · 创办人亲测)
+                    Master Leng (创办人亲测)
                   </span>
                   <span className="font-label-sm text-label-sm text-element-earth text-xs">
                     紫微斗数 · 居家风水 · “知命而行，安心而居”

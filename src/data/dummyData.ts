@@ -5,7 +5,7 @@ export const DEMO_USERS: Record<string, AppUser> = {
   owner: {
     uid: 'demo-user-owner',
     email: 'lengfarsun@gmail.com',
-    displayName: '林师父 (Master Leng Eng Chee · 创始人)',
+    displayName: 'Master Leng (创始人 · Founder)',
     role: 'owner',
     photoURL: '/leng_master_avatar.jpg',
     isDemo: true,

@@ -789,14 +789,14 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
           <div className="flex items-center gap-space-md">
             <div className="relative shrink-0">
               <img
-                alt="林师父 (Master Leng Eng Chee)"
+                alt="Master Leng"
                 className="w-16 h-16 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
                 src="/leng_master_avatar.jpg"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-surface-container-lowest p-0.5 shadow-sm border border-border-subtle">
                 <img
-                  alt="林师父朱砂法印"
+                  alt="Master Leng 朱砂法印"
                   className="w-full h-full rounded-full object-contain"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqam0W-zRTj4-fCuBG9jIhappKI849zMAEDZ7khiaIcPOM3qtC91Lm30N8NRYh1EFzjWbE5Tj4IMbfjigk7BKDqRVEsAyLmS5IZ73XqkVsefxef2coOiERBCFEe8keBhcVBoAnWsJgP_D-a44MqZERdo2jkoT-s0Pu8adYfypeoHExe7d9pTIqRjxWDWbY3AW9k5aOPyb7qM_UCYwtKzw1EcXxNZdcgfSEghiiig5iTrng-mJHSWirGw"
                   referrerPolicy="no-referrer"
@@ -806,7 +806,7 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="font-headline-sm text-headline-sm font-bold text-text-primary">
-                  {report.approvedBy || '林师父 (Master Leng Eng Chee · 创办人亲核签发)'}
+                  {report.approvedBy || 'Master Leng (创办人亲核签发)'}
                 </span>
                 <span className="px-2 py-0.5 rounded bg-surface-container-highest font-label-sm text-label-sm text-on-surface text-xs font-semibold">
                   {report.masterLicense || 'Lic. MY-MLK-8812'}
@@ -828,7 +828,7 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
               rel="noopener noreferrer"
               className="text-xs text-element-fire hover:underline flex items-center gap-1 font-medium"
             >
-              <span>林师父官方介绍与预约 ↗</span>
+              <span>Master Leng 官方介绍与预约 ↗</span>
             </a>
             <span className="font-label-sm text-label-sm text-text-muted font-mono text-[11px]">
               {report.sha256Verification}

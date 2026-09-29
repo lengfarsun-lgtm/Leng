@@ -19,17 +19,17 @@ interface AvatarPreset {
 const PRESET_AVATARS: AvatarPreset[] = [
   {
     id: 'master-leng-avatar',
-    name: '林师父本人真实头像 (Master Leng Eng Chee)',
+    name: 'Master Leng 本人真实头像',
     roleHint: '应用创始人 · 领衔导师',
     url: '/leng_master_avatar.jpg',
     description: '官网原图裁剪：手持罗盘，身穿红金传统服饰温和正气真容',
   },
   {
     id: 'master-leng-cutout',
-    name: '林师父手持罗盘全身立像 (官网真照)',
+    name: 'Master Leng 手持罗盘全身立像 (官网真照)',
     roleHint: '创办人官方透底真容',
     url: '/founder-cutout.png',
-    description: '来自林师父官网 founder-cutout.png 高清去背真像',
+    description: '来自 Master Leng 官网 founder-cutout.png 高清去背真像',
   },
   {
     id: 'master-tang-square',
