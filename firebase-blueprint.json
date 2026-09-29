@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with role and contact metadata",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["owner", "management", "logistic", "client"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "ConsultationSubmission": {
+      "title": "ConsultationSubmission",
+      "description": "Client intake data including lunar birth date and consultation problems",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "fullName": { "type": "string" },
+        "chineseName": { "type": "string" },
+        "gender": { "type": "string", "enum": ["male", "female"] },
+        "birthPlace": { "type": "string" },
+        "lunarYear": { "type": "string" },
+        "lunarMonth": { "type": "number" },
+        "isLeapMonth": { "type": "boolean" },
+        "lunarDay": { "type": "number" },
+        "shichen": { "type": "string" },
+        "problemCategories": { "type": "array" },
+        "problemDescription": { "type": "string" },
+        "propertyAddress": { "type": "string" },
+        "luoPanFacing": { "type": "string" },
+        "reportLanguage": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "processing", "in_review", "approved", "delivered"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "fullName", "gender", "lunarYear", "lunarMonth", "lunarDay", "shichen", "status"]
+    },
+    "BaziReport": {
+      "title": "BaziReport",
+      "description": "Synthesized BaZi Four Pillars report and Gemini/Master analysis",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "submissionId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "fourPillars": { "type": "object" },
+        "dayMasterStatus": { "type": "string" },
+        "beneficialElements": { "type": "string" },
+        "avoidanceElements": { "type": "string" },
+        "analysisText": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "in_review", "approved", "delivered"] },
+        "approvedBy": { "type": "string" },
+        "approvedAt": { "type": "string" }
+      },
+      "required": ["id", "submissionId", "clientName", "status"]
+    },
+    "LogisticsTask": {
+      "title": "LogisticsTask",
+      "description": "Physical remedy fulfillment and on-site positioning task",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "reportId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "remedyName": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "address": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "in_transit", "delivered", "failed"] },
+        "scheduledTime": { "type": "string" },
+        "proofPhotoUrl": { "type": "string" }
+      },
+      "required": ["id", "clientName", "remedyName", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles and RBAC role assignments"
+    },
+    "/submissions/{submissionId}": {
+      "schema": "ConsultationSubmission",
+      "description": "Client intake and astrological details"
+    },
+    "/reports/{reportId}": {
+      "schema": "BaziReport",
+      "description": "Calculated BaZi and Master-approved reports"
+    },
+    "/tasks/{taskId}": {
+      "schema": "LogisticsTask",
+      "description": "Logistics delivery and site installation tasks"
+    }
+  }
+}

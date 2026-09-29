@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'owner';
+    }
+
+    function isManagement() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'management' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'owner');
+    }
+
+    function isLogistic() {
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'logistic' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'owner');
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isOwner() || isManagement());
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isSignedIn() && (request.auth.uid == userId || isOwner());
+      allow delete: if isOwner();
+    }
+
+    // Submissions Collection
+    match /submissions/{submissionId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isManagement());
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (resource.data.userId == request.auth.uid || isManagement());
+      allow delete: if isOwner();
+    }
+
+    // Reports Collection
+    match /reports/{reportId} {
+      allow read: if isSignedIn();
+      allow write: if isManagement();
+    }
+
+    // Logistics Tasks Collection
+    match /tasks/{taskId} {
+      allow read: if isSignedIn();
+      allow create, delete: if isManagement();
+      allow update: if isLogistic() || isManagement();
+    }
+  }
+}

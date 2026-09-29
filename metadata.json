@@ -1,0 +1,6 @@
+{
+  "name": "风水工具 · Feng Shui & BaZi Consultation System (Malaysia)",
+  "description": "Malaysia's premier algorithmic BaZi engine & Gemini-powered Feng Shui consultancy. Deterministic solar term calculations paired with certified master verification under strict ISO-grade precision.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

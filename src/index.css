@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #a14000;
+  --color-primary-container: #ff7c35;
+  --color-primary-fixed: #ffdbcc;
+  --color-primary-fixed-dim: #ffb694;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #632500;
+  --color-on-primary-fixed: #351000;
+  --color-on-primary-fixed-variant: #7b2f00;
+
+  --color-secondary: #735c00;
+  --color-secondary-container: #fed65b;
+  --color-secondary-fixed: #ffe088;
+  --color-secondary-fixed-dim: #e9c349;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #745c00;
+  --color-on-secondary-fixed: #241a00;
+  --color-on-secondary-fixed-variant: #574500;
+
+  --color-tertiary: #5f5e60;
+  --color-tertiary-container: #a3a1a4;
+  --color-tertiary-fixed: #e5e1e4;
+  --color-tertiary-fixed-dim: #c8c6c8;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #39383a;
+  --color-on-tertiary-fixed: #1c1b1d;
+  --color-on-tertiary-fixed-variant: #474649;
+
+  --color-surface: #faf9f9;
+  --color-surface-dim: #dadada;
+  --color-surface-bright: #faf9f9;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f3f3;
+  --color-surface-container: #efeeed;
+  --color-surface-container-high: #e9e8e8;
+  --color-surface-container-highest: #e3e2e2;
+  --color-surface-base: #ffffff;
+  --color-surface-warm: #f7f7f8;
+  --color-surface-muted: #e1e1e0;
+  --color-surface-variant: #e3e2e2;
+
+  --color-on-surface: #1a1c1c;
+  --color-on-surface-variant: #584238;
+  --color-inverse-surface: #2f3131;
+  --color-inverse-on-surface: #f1f0f0;
+  --color-outline: #8b7266;
+  --color-outline-variant: #dfc0b3;
+
+  --color-text-primary: #0a0a0c;
+  --color-text-muted: #9d9d9d;
+  --color-accent-gold-bright: #e5a93c;
+  --color-border-subtle: #e5e5e5;
+
+  --color-element-wood: #2e7d32;
+  --color-element-fire: #ff7c35;
+  --color-element-earth: #c8963e;
+  --color-element-metal: #8a8d91;
+  --color-element-water: #1e3a8a;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  --font-display-hero: "Outfit", sans-serif;
+  --font-headline-lg: "Outfit", sans-serif;
+  --font-headline-md: "Outfit", sans-serif;
+  --font-headline-sm: "Outfit", sans-serif;
+  --font-body-lg: "Outfit", "Noto Sans SC", sans-serif;
+  --font-body-md: "Outfit", "Noto Sans SC", sans-serif;
+  --font-body-sm: "Outfit", "Noto Sans SC", sans-serif;
+  --font-label-md: "Noto Sans", "Noto Sans SC", sans-serif;
+  --font-label-sm: "Noto Sans", "Noto Sans SC", sans-serif;
+
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2.5rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-gutter-mobile: 1rem;
+  --spacing-margin: 3rem;
+  --spacing-margin-mobile: 1.25rem;
+}
+
+body {
+  font-family: var(--font-body-md);
+  color: var(--color-on-surface);
+  background-color: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
