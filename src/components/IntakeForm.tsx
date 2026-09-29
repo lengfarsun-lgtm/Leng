@@ -8,6 +8,7 @@ import {
   getMonthStemBranch,
   getHourStemBranch,
 } from '../lib/baziEngine';
+import { convertSolarToLunar, convertLunarToSolar } from '../lib/lunarCalendar';
 
 interface IntakeFormProps {
   onSubmit: (submission: ConsultationSubmission) => void;
@@ -19,6 +20,11 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
   const [chineseName, setChineseName] = useState('慧敏');
   const [gender, setGender] = useState<'male' | 'female'>('female');
   const [locationKey, setLocationKey] = useState('KL');
+  // Calendar input type: solar (阳历/公历 - 自动转换阴历) or lunar (直接输入阴历/农历)
+  const [calendarType, setCalendarType] = useState<'solar' | 'lunar'>('solar');
+  const [solarYear, setSolarYear] = useState(1990);
+  const [solarMonth, setSolarMonth] = useState(6);
+  const [solarDay, setSolarDay] = useState(24);
   const [lunarYear, setLunarYear] = useState('1990');
   const [lunarMonth, setLunarMonth] = useState(5);
   const [isLeapMonth, setIsLeapMonth] = useState(true);
@@ -51,7 +57,20 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
     }
   };
 
+  const solarYearsList = useMemo(() => {
+    const list: number[] = [];
+    for (let y = 1900; y <= 2026; y++) {
+      list.push(y);
+    }
+    return list;
+  }, []);
+
   const lunarYearsList = useMemo(() => getLunarYearsList(1900, 2026), []);
+
+  // Compute days in the selected solar month
+  const maxSolarDays = useMemo(() => {
+    return new Date(solarYear, solarMonth, 0).getDate();
+  }, [solarYear, solarMonth]);
 
   // Real-time Solar & Shichen Conversion preview
   const livePreview = useMemo(() => {
@@ -63,31 +82,85 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
       '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十',
     ];
 
-    // Calculated equivalent
-    const solarYear = parseInt(lunarYear, 10) || 1990;
-    const yearSB = getYearStemBranch(solarYear);
-    const monthSB = getMonthStemBranch(yearSB.stem, lunarMonth);
-    const hourSB = getHourStemBranch('丙', shichenKey);
-    const solarDateStr = `${solarYear}年6月24日 星期日 (Sunday)`;
     const offsetMin = selectedLocation.offsetMinutes;
     const sign = offsetMin >= 0 ? '+' : '';
     const solarAdjustedStr = `11:01 AM (${selectedLocation.nameZh.split(' ')[0]}当地视太阳正中 · 时差 ${sign}${offsetMin}分)`;
 
-    return {
-      lunarText: `${yearSB.stemBranch}年 ${isLeapText}${monthNames[lunarMonth] || '五'}月${dayNames[lunarDay] || '初二'}`,
-      shichenText: `${selectedShichen.branch}时 (${selectedShichen.timeRange.split(' - ')[0]})`,
-      solarDate: solarDateStr,
-      solarAdjusted: solarAdjustedStr,
-      solarTerm: '芒种后 · 夏至前 (夏至节前 2 天 · 丁火当令)',
-      zodiacSign: `${yearSB.zodiacZh}年 · ${yearSB.stemBranch} (纳音: ${yearSB.naYinZh}命)`,
-      snapshot: {
-        year: yearSB.stemBranch,
-        month: monthSB.stemBranch,
-        day: '辛未',
-        hour: hourSB.stemBranch,
-      },
-    };
-  }, [lunarYear, lunarMonth, isLeapMonth, lunarDay, selectedLocation, selectedShichen, shichenKey]);
+    if (calendarType === 'solar') {
+      const clampedDay = Math.min(solarDay, maxSolarDays);
+      const autoLunar = convertSolarToLunar(solarYear, solarMonth, clampedDay);
+      const yearSB = getYearStemBranch(autoLunar.lunarYear);
+      const monthSB = getMonthStemBranch(yearSB.stem, autoLunar.lunarMonth);
+      const hourSB = getHourStemBranch('丙', shichenKey);
+
+      return {
+        calendarType: 'solar',
+        lunarYearNum: autoLunar.lunarYear,
+        lunarMonthNum: autoLunar.lunarMonth,
+        lunarDayNum: autoLunar.lunarDay,
+        isLeap: autoLunar.isLeap,
+        lunarText: autoLunar.fullLunarZh,
+        shichenText: `${selectedShichen.branch}时 (${selectedShichen.timeRange.split(' - ')[0]})`,
+        solarDate: `${solarYear}年${solarMonth}月${clampedDay}日 (公历)`,
+        solarAdjusted: solarAdjustedStr,
+        solarTerm: autoLunar.solarTerm || '芒种后 · 夏至前 (丁火当令)',
+        zodiacSign: `${autoLunar.zodiac}年 · ${autoLunar.gzYear} (纳音: ${yearSB.naYinZh}命)`,
+        autoLunar,
+        yearSB,
+        monthSB,
+        hourSB,
+        snapshot: {
+          year: autoLunar.gzYear,
+          month: autoLunar.gzMonth,
+          day: autoLunar.gzDay,
+          hour: hourSB.stemBranch,
+        },
+      };
+    } else {
+      const lunarYearNum = parseInt(lunarYear, 10) || 1990;
+      const autoSolar = convertLunarToSolar(lunarYearNum, lunarMonth, lunarDay, isLeapMonth);
+      const yearSB = getYearStemBranch(lunarYearNum);
+      const monthSB = getMonthStemBranch(yearSB.stem, lunarMonth);
+      const hourSB = getHourStemBranch('丙', shichenKey);
+
+      return {
+        calendarType: 'lunar',
+        lunarYearNum,
+        lunarMonthNum: lunarMonth,
+        lunarDayNum: lunarDay,
+        isLeap: isLeapMonth,
+        lunarText: `农历 ${yearSB.stemBranch}年 ${isLeapText}${monthNames[lunarMonth] || '五'}月${dayNames[lunarDay] || '初二'}`,
+        shichenText: `${selectedShichen.branch}时 (${selectedShichen.timeRange.split(' - ')[0]})`,
+        solarDate: `${autoSolar.solarDateStr} (公历对应)`,
+        solarAdjusted: solarAdjustedStr,
+        solarTerm: '芒种后 · 夏至前 (夏至节前 2 天 · 丁火当令)',
+        zodiacSign: `${yearSB.zodiacZh}年 · ${yearSB.stemBranch} (纳音: ${yearSB.naYinZh}命)`,
+        autoSolar,
+        yearSB,
+        monthSB,
+        hourSB,
+        snapshot: {
+          year: yearSB.stemBranch,
+          month: monthSB.stemBranch,
+          day: '辛未',
+          hour: hourSB.stemBranch,
+        },
+      };
+    }
+  }, [
+    calendarType,
+    solarYear,
+    solarMonth,
+    solarDay,
+    maxSolarDays,
+    lunarYear,
+    lunarMonth,
+    isLeapMonth,
+    lunarDay,
+    selectedLocation,
+    selectedShichen,
+    shichenKey,
+  ]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,6 +168,11 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
       alert('请勾选同意马来西亚个人资料保护法 (PDPA 2010) 合规协议');
       return;
     }
+
+    const finalLunarYear = calendarType === 'solar' ? livePreview.lunarYearNum.toString() : lunarYear;
+    const finalLunarMonth = calendarType === 'solar' ? livePreview.lunarMonthNum : lunarMonth;
+    const finalIsLeap = calendarType === 'solar' ? livePreview.isLeap : isLeapMonth;
+    const finalLunarDay = calendarType === 'solar' ? livePreview.lunarDayNum : lunarDay;
 
     const submission: ConsultationSubmission = {
       id: `MY-BZ-${Date.now().toString().slice(-4)}`,
@@ -104,10 +182,10 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
       gender,
       birthPlace: selectedLocation.nameZh,
       solarOffsetMinutes: selectedLocation.offsetMinutes,
-      lunarYear,
-      lunarMonth,
-      isLeapMonth,
-      lunarDay,
+      lunarYear: finalLunarYear,
+      lunarMonth: finalLunarMonth,
+      isLeapMonth: finalIsLeap,
+      lunarDay: finalLunarDay,
       shichen: shichenKey,
       problemCategories,
       problemDescription,
@@ -120,6 +198,9 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
       solarTimeAdjusted: livePreview.solarAdjusted,
       solarTermCheck: livePreview.solarTerm,
       zodiacSign: livePreview.zodiacSign,
+      calendarType,
+      solarBirthDate: livePreview.solarDate,
+      lunarBirthDate: livePreview.lunarText,
     };
 
     onSubmit(submission);
@@ -378,7 +459,7 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
             </div>
           </section>
 
-          {/* SECTION II: 农历八字生辰输入 (Core Lunar Engine) */}
+          {/* SECTION II: 生辰时间与历法自动转换 (Core Lunar & Solar Conversion Engine) */}
           <section className="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm border border-border-subtle flex flex-col gap-space-lg" id="section-birth">
             <div className="flex flex-col md:flex-row md:items-center justify-between pb-space-xs bg-gradient-to-r from-element-fire/10 via-surface-container-low to-transparent p-space-sm rounded-xl">
               <div className="flex items-center gap-space-sm">
@@ -388,172 +469,391 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
                 <div>
                   <div className="flex items-center gap-space-xs">
                     <h2 className="font-headline-sm text-headline-sm text-text-primary font-semibold">
-                      农历八字生辰输入 Lunar Calendar Natal Engine
+                      生辰历法与阴历自动转换 Natal Engine & Auto Lunar Sync
                     </h2>
                     <span className="px-2 py-0.5 rounded-full bg-accent-gold-bright/20 text-secondary font-label-sm text-label-sm font-bold text-xs">
                       FR-F1 核心系统
                     </span>
                   </div>
                   <p className="font-label-sm text-label-sm text-on-surface-variant text-xs">
-                    Input according to traditional Chinese Lunar registry (农历/阴历). Instant bidirectional Solar equivalent calculated in real-time.
+                    支持输入阳历（公历/身份证日期）或直接输入阴历。系统内置 1900-2026 百年历法引擎，自动为您精准转换阴历干支、推算闰月并排盘四柱八字。
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-space-xs mt-2 md:mt-0">
-                <span className="font-label-sm text-label-sm text-text-muted text-xs">输入模式 Mode:</span>
-                <span className="px-space-sm py-1 rounded-full bg-surface-container-highest text-text-primary font-label-sm text-label-sm font-semibold text-xs">
-                  以农历为准 (Lunar Based)
+                <span className="font-label-sm text-label-sm text-text-muted text-xs">当前模式:</span>
+                <span className="px-space-sm py-1 rounded-full bg-element-fire/15 text-element-fire font-label-sm text-label-sm font-bold text-xs">
+                  {calendarType === 'solar' ? '阳历输入 · 自动转换阴历' : '阴历输入 · 自动核验'}
                 </span>
               </div>
+            </div>
+
+            {/* Mode Switcher Tabs */}
+            <div className="flex flex-col sm:flex-row p-1.5 bg-surface-container-high rounded-xl gap-1">
+              <button
+                type="button"
+                onClick={() => setCalendarType('solar')}
+                className={`flex-1 py-2.5 px-4 rounded-lg text-xs md:text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  calendarType === 'solar'
+                    ? 'bg-element-fire text-on-primary shadow-sm'
+                    : 'text-text-muted hover:text-text-primary hover:bg-surface-container-highest/60'
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">sunny</span>
+                <span>输入阳历 / 公历日期 (推荐 · 依身份证/报生纸)</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] bg-accent-gold-bright text-text-primary font-bold">
+                  自动转换阴历
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setCalendarType('lunar')}
+                className={`flex-1 py-2.5 px-4 rounded-lg text-xs md:text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  calendarType === 'lunar'
+                    ? 'bg-element-fire text-on-primary shadow-sm'
+                    : 'text-text-muted hover:text-text-primary hover:bg-surface-container-highest/60'
+                }`}
+              >
+                <span className="material-symbols-outlined text-base">dark_mode</span>
+                <span>直接输入阴历 / 农历日期 (确知生辰农历者)</span>
+              </button>
             </div>
 
             {/* Inputs paired with Live Solar Preview Card */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
               {/* Left side: Selectors (7 Cols) */}
               <div className="lg:col-span-7 flex flex-col gap-space-md">
-                {/* Year & Month */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
-                  <div className="flex flex-col gap-1">
-                    <label className="font-label-sm text-label-sm text-text-primary font-semibold">
-                      农历出生年份 Lunar Year <span className="text-element-fire">*</span>
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={lunarYear}
-                        onChange={(e) => setLunarYear(e.target.value)}
-                        className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
-                      >
-                        {lunarYearsList.map((opt) => (
-                          <option key={opt.year} value={opt.year.toString()}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                      <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
-                        arrow_drop_down
+                {calendarType === 'solar' ? (
+                  <>
+                    {/* Solar Inputs */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-text-muted flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm text-element-fire">calendar_today</span>
+                        请输入您的阳历 / 公历出生年月日 (公历年份 1900 - 2026)：
                       </span>
                     </div>
-                  </div>
 
-                  {/* Month */}
-                  <div className="flex flex-col gap-1">
-                    <label className="font-label-sm text-label-sm text-text-primary font-semibold">
-                      农历出生月份 Lunar Month <span className="text-element-fire">*</span>
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={lunarMonth}
-                        onChange={(e) => setLunarMonth(parseInt(e.target.value, 10))}
-                        className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
-                      >
-                        <option value={1}>正月 (寅月 - 初春)</option>
-                        <option value={2}>二月 (卯月 - 仲春)</option>
-                        <option value={3}>三月 (辰月 - 季春)</option>
-                        <option value={4}>四月 (巳月 - 初夏)</option>
-                        <option value={5}>五月 (午月 - 仲夏)</option>
-                        <option value={6}>六月 (未月 - 季夏)</option>
-                        <option value={7}>七月 (申月 - 初秋)</option>
-                        <option value={8}>八月 (酉月 - 仲秋)</option>
-                        <option value={9}>九月 (戌月 - 季秋)</option>
-                        <option value={10}>十月 (亥月 - 初冬)</option>
-                        <option value={11}>冬月 / 十一月 (子月 - 仲冬)</option>
-                        <option value={12}>腊月 / 十二月 (丑月 - 季冬)</option>
-                      </select>
-                      <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
-                        arrow_drop_down
-                      </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-md">
+                      {/* Solar Year */}
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          阳历年份 Solar Year <span className="text-element-fire">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={solarYear}
+                            onChange={(e) => setSolarYear(parseInt(e.target.value, 10))}
+                            className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                          >
+                            {solarYearsList.map((y) => (
+                              <option key={y} value={y}>
+                                {y} 年
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                            arrow_drop_down
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Solar Month */}
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          阳历月份 Month <span className="text-element-fire">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={solarMonth}
+                            onChange={(e) => setSolarMonth(parseInt(e.target.value, 10))}
+                            className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                          >
+                            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                              <option key={m} value={m}>
+                                {m} 月 ({['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][m - 1]})
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                            arrow_drop_down
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Solar Day */}
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          阳历日期 Day <span className="text-element-fire">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={Math.min(solarDay, maxSolarDays)}
+                            onChange={(e) => setSolarDay(parseInt(e.target.value, 10))}
+                            className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                          >
+                            {Array.from({ length: maxSolarDays }, (_, i) => i + 1).map((d) => (
+                              <option key={d} value={d}>
+                                {d} 日
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                            arrow_drop_down
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Leap Month & Day */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md items-start">
-                  <div className="flex flex-col gap-1">
-                    <label className="font-label-sm text-label-sm text-text-primary font-semibold">
-                      闰月选项 Leap Month
-                    </label>
-                    <div className="h-12 flex items-center justify-between px-space-md bg-surface-container-low rounded-xl border border-border-subtle/50">
-                      <label className="flex items-center gap-space-sm cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          checked={isLeapMonth}
-                          onChange={(e) => setIsLeapMonth(e.target.checked)}
-                          className="w-4 h-4 accent-element-fire rounded"
-                        />
-                        <span className="font-label-md text-label-md text-text-primary font-medium">
-                          此月份为闰月 (Is Leap Month)
+                    {/* Shichen Dropdown */}
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-sm text-label-sm text-text-primary font-semibold flex items-center justify-between">
+                        <span>
+                          出生时辰 Shichen (12 Two-Hour Solar Intervals) <span className="text-element-fire">*</span>
                         </span>
+                        <span className="text-element-earth font-medium text-xs">准确至时辰可排定时柱</span>
                       </label>
-                      {isLeapMonth && (
-                        <span className="px-2 py-0.5 rounded text-xs font-semibold bg-accent-gold-bright text-text-primary shadow-xs">
-                          闰{['', '正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'][lunarMonth] || '五'}月
+                      <div className="relative">
+                        <select
+                          value={shichenKey}
+                          onChange={(e) => setShichenKey(e.target.value)}
+                          className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                        >
+                          {Object.entries(SHICHEN_MAP).map(([k, s]) => (
+                            <option key={k} value={k}>
+                              {s.nameZh}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                          arrow_drop_down
                         </span>
-                      )}
+                      </div>
                     </div>
-                    <span className="font-label-sm text-label-sm text-text-muted text-[11px]">
-                      {lunarYear}年农历历法校准已激活 · 1900-2026 百年历库支持
-                    </span>
-                  </div>
 
-                  <div className="flex flex-col gap-1">
-                    <label className="font-label-sm text-label-sm text-text-primary font-semibold">
-                      农历出生日期 Lunar Day <span className="text-element-fire">*</span>
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={lunarDay}
-                        onChange={(e) => setLunarDay(parseInt(e.target.value, 10))}
-                        className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
-                      >
-                        {Array.from({ length: 30 }, (_, i) => i + 1).map((d) => (
-                          <option key={d} value={d}>
-                            {d <= 10
-                              ? `初${d === 10 ? '十' : ['一', '二', '三', '四', '五', '六', '七', '八', '九'][d - 1]}`
-                              : d < 20
-                              ? `十${['', '一', '二', '三', '四', '五', '六', '七', '八', '九'][d - 10]}`
-                              : d === 20
-                              ? '二十'
-                              : d < 30
-                              ? `廿${['', '一', '二', '三', '四', '五', '六', '七', '八', '九'][d - 20]}`
-                              : '三十'}
-                          </option>
-                        ))}
-                      </select>
-                      <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
-                        arrow_drop_down
+                    {/* AUTO-CONVERTED LUNAR RESULT CARD */}
+                    {livePreview.autoLunar && (
+                      <div className="p-space-md rounded-2xl bg-gradient-to-r from-element-fire/10 via-surface-container to-surface-container-high border-2 border-element-fire/40 shadow-sm flex flex-col gap-space-xs mt-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold uppercase tracking-wider text-element-fire flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-base animate-pulse">auto_awesome</span>
+                            已为您自动转换出阴历（农历）日期 (Auto-Converted Lunar)
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full bg-accent-gold-bright text-text-primary text-[11px] font-bold shadow-xs">
+                            1900-2026 智能算法校准
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 pt-1">
+                          <div className="font-headline-sm text-headline-sm font-bold text-element-fire tracking-wide">
+                            {livePreview.autoLunar.fullLunarZh}
+                          </div>
+                          <div className="text-xs text-text-muted">
+                            生肖：<strong className="text-text-primary">{livePreview.autoLunar.zodiac}年</strong> ({livePreview.autoLunar.gzYear}年)
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-border-subtle/50 text-xs">
+                          <div className="bg-surface-container-lowest/80 p-2 rounded-lg flex flex-col">
+                            <span className="text-text-muted text-[10px]">农历干支</span>
+                            <span className="font-bold text-text-primary">{livePreview.autoLunar.gzYear}年</span>
+                          </div>
+                          <div className="bg-surface-container-lowest/80 p-2 rounded-lg flex flex-col">
+                            <span className="text-text-muted text-[10px]">农历月份</span>
+                            <span className="font-bold text-element-fire">{livePreview.autoLunar.lunarMonthZh}</span>
+                          </div>
+                          <div className="bg-surface-container-lowest/80 p-2 rounded-lg flex flex-col">
+                            <span className="text-text-muted text-[10px]">农历日子</span>
+                            <span className="font-bold text-text-primary">{livePreview.autoLunar.lunarDayZh}</span>
+                          </div>
+                          <div className="bg-surface-container-lowest/80 p-2 rounded-lg flex flex-col">
+                            <span className="text-text-muted text-[10px]">纳音命格</span>
+                            <span className="font-bold text-element-wood">{livePreview.yearSB?.naYinZh}命</span>
+                          </div>
+                        </div>
+
+                        {livePreview.autoLunar.isLeap && (
+                          <div className="flex items-center gap-1.5 text-xs text-element-fire font-semibold pt-1">
+                            <span className="material-symbols-outlined text-sm">verified</span>
+                            <span>该年份恰逢闰月【{livePreview.autoLunar.lunarMonthZh}】，系统已自动为您完成闰月校准与节气排盘。</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {/* Lunar Inputs */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-text-muted flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm text-element-fire">dark_mode</span>
+                        直接输入阴历（农历）出生日期：
                       </span>
                     </div>
-                  </div>
-                </div>
 
-                {/* Shichen Dropdown */}
-                <div className="flex flex-col gap-1">
-                  <label className="font-label-sm text-label-sm text-text-primary font-semibold flex items-center justify-between">
-                    <span>
-                      出生时辰 Shichen (12 Two-Hour Solar Intervals) <span className="text-element-fire">*</span>
-                    </span>
-                    <span className="text-element-earth font-medium text-xs">准确至时辰可排定时柱</span>
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={shichenKey}
-                      onChange={(e) => setShichenKey(e.target.value)}
-                      className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
-                    >
-                      {Object.entries(SHICHEN_MAP).map(([k, s]) => (
-                        <option key={k} value={k}>
-                          {s.nameZh}
-                        </option>
-                      ))}
-                    </select>
-                    <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
-                      arrow_drop_down
-                    </span>
-                  </div>
-                  <span className="font-label-sm text-label-sm text-text-muted text-[11px]">
-                    注：夜子时与早子时以午夜 24:00 (00:00) 为界，系统自动更迭日柱干支。
-                  </span>
-                </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          农历出生年份 Lunar Year (1900-2026) <span className="text-element-fire">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={lunarYear}
+                            onChange={(e) => setLunarYear(e.target.value)}
+                            className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                          >
+                            {lunarYearsList.map((opt) => (
+                              <option key={opt.year} value={opt.year.toString()}>
+                                {opt.label}
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                            arrow_drop_down
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Month */}
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          农历出生月份 Lunar Month <span className="text-element-fire">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={lunarMonth}
+                            onChange={(e) => setLunarMonth(parseInt(e.target.value, 10))}
+                            className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                          >
+                            <option value={1}>正月 (寅月 - 初春)</option>
+                            <option value={2}>二月 (卯月 - 仲春)</option>
+                            <option value={3}>三月 (辰月 - 季春)</option>
+                            <option value={4}>四月 (巳月 - 初夏)</option>
+                            <option value={5}>五月 (午月 - 仲夏)</option>
+                            <option value={6}>六月 (未月 - 季夏)</option>
+                            <option value={7}>七月 (申月 - 初秋)</option>
+                            <option value={8}>八月 (酉月 - 仲秋)</option>
+                            <option value={9}>九月 (戌月 - 季秋)</option>
+                            <option value={10}>十月 (亥月 - 初冬)</option>
+                            <option value={11}>冬月 / 十一月 (子月 - 仲冬)</option>
+                            <option value={12}>腊月 / 十二月 (丑月 - 季冬)</option>
+                          </select>
+                          <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                            arrow_drop_down
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Leap Month & Day */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md items-start">
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          闰月选项 Leap Month
+                        </label>
+                        <div className="h-12 flex items-center justify-between px-space-md bg-surface-container-low rounded-xl border border-border-subtle/50">
+                          <label className="flex items-center gap-space-sm cursor-pointer select-none">
+                            <input
+                              type="checkbox"
+                              checked={isLeapMonth}
+                              onChange={(e) => setIsLeapMonth(e.target.checked)}
+                              className="w-4 h-4 accent-element-fire rounded"
+                            />
+                            <span className="font-label-md text-label-md text-text-primary font-medium">
+                              此月份为闰月 (Is Leap Month)
+                            </span>
+                          </label>
+                          {isLeapMonth && (
+                            <span className="px-2 py-0.5 rounded text-xs font-semibold bg-accent-gold-bright text-text-primary shadow-xs">
+                              闰{['', '正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'][lunarMonth] || '五'}月
+                            </span>
+                          )}
+                        </div>
+                        <span className="font-label-sm text-label-sm text-text-muted text-[11px]">
+                          {lunarYear}年农历历法校准已激活 · 1900-2026 百年历库支持
+                        </span>
+                      </div>
+
+                      <div className="flex flex-col gap-1">
+                        <label className="font-label-sm text-label-sm text-text-primary font-semibold">
+                          农历出生日期 Lunar Day <span className="text-element-fire">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={lunarDay}
+                            onChange={(e) => setLunarDay(parseInt(e.target.value, 10))}
+                            className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                          >
+                            {Array.from({ length: 30 }, (_, i) => i + 1).map((d) => (
+                              <option key={d} value={d}>
+                                {d <= 10
+                                  ? `初${d === 10 ? '十' : ['一', '二', '三', '四', '五', '六', '七', '八', '九'][d - 1]}`
+                                  : d < 20
+                                  ? `十${['', '一', '二', '三', '四', '五', '六', '七', '八', '九'][d - 10]}`
+                                  : d === 20
+                                  ? '二十'
+                                  : d < 30
+                                  ? `廿${['', '一', '二', '三', '四', '五', '六', '七', '八', '九'][d - 20]}`
+                                  : '三十'}
+                              </option>
+                            ))}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                            arrow_drop_down
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Shichen Dropdown */}
+                    <div className="flex flex-col gap-1">
+                      <label className="font-label-sm text-label-sm text-text-primary font-semibold flex items-center justify-between">
+                        <span>
+                          出生时辰 Shichen (12 Two-Hour Solar Intervals) <span className="text-element-fire">*</span>
+                        </span>
+                        <span className="text-element-earth font-medium text-xs">准确至时辰可排定时柱</span>
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={shichenKey}
+                          onChange={(e) => setShichenKey(e.target.value)}
+                          className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
+                        >
+                          {Object.entries(SHICHEN_MAP).map(([k, s]) => (
+                            <option key={k} value={k}>
+                              {s.nameZh}
+                            </option>
+                          ))}
+                        </select>
+                        <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
+                          arrow_drop_down
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* LUNAR CONFIRMATION & SOLAR EQUIVALENT CARD */}
+                    {livePreview.autoSolar && (
+                      <div className="p-space-md rounded-2xl bg-gradient-to-r from-element-fire/10 via-surface-container to-surface-container-high border-2 border-element-fire/40 shadow-sm flex flex-col gap-space-xs mt-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold uppercase tracking-wider text-element-fire flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-base animate-pulse">check_circle</span>
+                            阴历确认与公历对应推算 (Calculated Solar Equivalent)
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full bg-accent-gold-bright text-text-primary text-[11px] font-bold shadow-xs">
+                            1900-2026 农历库
+                          </span>
+                        </div>
+                        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 pt-1">
+                          <div className="font-headline-sm text-headline-sm font-bold text-element-fire tracking-wide">
+                            {livePreview.lunarText}
+                          </div>
+                          <div className="text-xs text-text-muted">
+                            对应公历：<strong className="text-text-primary">{livePreview.autoSolar.solarDateStr}</strong>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Right side: Live Solar Preview Card */}
@@ -575,7 +875,9 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
                   <div className="bg-surface-container-lowest rounded-xl p-space-md flex flex-col gap-space-sm shadow-xs border border-border-subtle/50">
                     <div className="flex flex-col">
                       <span className="font-label-sm text-label-sm text-text-muted text-xs">
-                        输入农历 (Selected Lunar Record)
+                        {calendarType === 'solar'
+                          ? '智能历法自动转换阴历 (Auto-Converted Lunar)'
+                          : '输入阴历记录 (Input Lunar Record)'}
                       </span>
                       <div className="flex items-baseline gap-2">
                         <span className="font-headline-sm text-headline-sm font-bold text-element-fire">
@@ -589,7 +891,9 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
                     <div className="h-px w-full bg-surface-container"></div>
                     <div className="flex flex-col">
                       <span className="font-label-sm text-label-sm text-text-muted text-xs">
-                        农历对应公历实时预览 Real-time Solar Equivalent
+                        {calendarType === 'solar'
+                          ? '输入阳历/公历 (Input Solar Date)'
+                          : '阴历对应公历实时推算 (Calculated Solar Equivalent)'}
                       </span>
                       <div className="flex items-baseline gap-2">
                         <span className="font-headline-sm text-headline-sm font-semibold text-text-primary">

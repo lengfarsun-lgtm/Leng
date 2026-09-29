@@ -91,6 +91,9 @@ export interface ConsultationSubmission {
   solarTimeAdjusted?: string;
   solarTermCheck?: string;
   zodiacSign?: string;
+  calendarType?: 'solar' | 'lunar';
+  solarBirthDate?: string;
+  lunarBirthDate?: string;
 }
 
 export interface BaziReport {
