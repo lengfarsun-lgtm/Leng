@@ -1263,7 +1263,7 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
                 <img
                   alt="Master Kenneth Tan"
                   className="w-14 h-14 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
-                  src="/src/assets/images/master_avatar_1790670431010.jpg"
+                  src="/master_avatar.jpg"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col min-w-0">

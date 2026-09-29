@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AppUser, UserRole } from '../types';
+import { AvatarModal } from './AvatarModal';
 
 interface HeaderProps {
   currentUser: AppUser | null;
@@ -9,6 +10,7 @@ interface HeaderProps {
   onOpenAuth: () => void;
   onSwitchRole: (role: UserRole) => void;
   onLogout: () => void;
+  onUpdateAvatar?: (newPhotoURL: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -19,10 +21,12 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAuth,
   onSwitchRole,
   onLogout,
+  onUpdateAvatar,
 }) => {
   const [lang, setLang] = useState<'zh' | 'en'>('zh');
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [avatarModalOpen, setAvatarModalOpen] = useState(false);
 
   const roleLabels: Record<UserRole, { zh: string; color: string }> = {
     owner: { zh: 'Owner (老板)', color: 'bg-primary-container text-on-primary' },
@@ -174,26 +178,53 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Profile & Role Switcher Dropdown */}
             {profileDropdownOpen && currentUser && (
               <div className="absolute right-0 mt-3 w-72 bg-surface-container-lowest rounded-2xl shadow-2xl border border-border-subtle p-3 flex flex-col gap-2 z-50">
-                <div className="p-2 bg-surface-warm rounded-xl flex items-center gap-2.5">
-                  <img
-                    alt={currentUser.displayName}
-                    className="w-10 h-10 rounded-full object-cover"
-                    src={currentUser.photoURL}
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="flex flex-col min-w-0">
-                    <span className="font-label-md text-label-md font-bold text-text-primary truncate">
-                      {currentUser.displayName}
-                    </span>
-                    <span className="font-label-sm text-label-sm text-text-muted truncate text-[11px]">
-                      {currentUser.email}
-                    </span>
-                    <div className="mt-1">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${roleLabels[currentRole].color}`}>
-                        {roleLabels[currentRole].zh}
+                <div className="p-2.5 bg-surface-warm rounded-2xl flex flex-col gap-2 border border-border-subtle/60">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="relative group cursor-pointer shrink-0"
+                      title="点击更换头像 (Click to change avatar)"
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
+                        setAvatarModalOpen(true);
+                      }}
+                    >
+                      <img
+                        alt={currentUser.displayName}
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-element-fire/40 shadow-sm group-hover:brightness-90 transition-all"
+                        src={currentUser.photoURL || '/master_avatar.jpg'}
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity text-white text-[10px] backdrop-blur-[1px]">
+                        <span className="material-symbols-outlined text-base">photo_camera</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col min-w-0 flex-1">
+                      <span className="font-label-md text-label-md font-bold text-text-primary truncate">
+                        {currentUser.displayName}
                       </span>
+                      <span className="font-label-sm text-label-sm text-text-muted truncate text-[11px]">
+                        {currentUser.email}
+                      </span>
+                      <div className="mt-1 flex items-center gap-1.5">
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${roleLabels[currentRole].color}`}>
+                          {roleLabels[currentRole].zh}
+                        </span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Prominent Change Avatar Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setProfileDropdownOpen(false);
+                      setAvatarModalOpen(true);
+                    }}
+                    className="w-full py-1.5 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-text-primary text-xs font-semibold flex items-center justify-center gap-1.5 border border-border-subtle/80 hover:border-element-fire/60 transition-all active:scale-[0.98]"
+                  >
+                    <span className="material-symbols-outlined text-sm text-element-fire">add_a_photo</span>
+                    <span>更换个人头像 (Change Avatar)</span>
+                  </button>
                 </div>
 
                 {/* Quick Role Switcher for seamless testing */}
@@ -328,6 +359,14 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         </div>
       )}
+
+      {/* Profile Avatar Studio Modal */}
+      <AvatarModal
+        isOpen={avatarModalOpen}
+        onClose={() => setAvatarModalOpen(false)}
+        currentUser={currentUser}
+        onSaveAvatar={(newUrl) => onUpdateAvatar?.(newUrl)}
+      />
     </header>
   );
 };

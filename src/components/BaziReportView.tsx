@@ -791,7 +791,7 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
               <img
                 alt="Master Raymond Tang"
                 className="w-16 h-16 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
-                src="/src/assets/images/master_avatar_1790670431010.jpg"
+                src="/master_avatar.jpg"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-surface-container-lowest p-0.5 shadow-sm border border-border-subtle">

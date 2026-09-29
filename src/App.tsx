@@ -16,8 +16,21 @@ import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 
 export default function App() {
+  const getInitialUser = (): AppUser => {
+    const defaultUser = { ...DEMO_USERS['client'] };
+    try {
+      const saved = localStorage.getItem(`metavox_avatar_${defaultUser.uid}`);
+      if (saved) {
+        defaultUser.photoURL = saved;
+      }
+    } catch {
+      // ignore
+    }
+    return defaultUser;
+  };
+
   // Start with Demo Client by default, with easy switch/login
-  const [currentUser, setCurrentUser] = useState<AppUser | null>(DEMO_USERS['client']);
+  const [currentUser, setCurrentUser] = useState<AppUser | null>(getInitialUser);
   const [currentRole, setCurrentRole] = useState<UserRole>('client');
   const [currentView, setCurrentView] = useState<'home' | 'intake' | 'report' | 'ops'>('home');
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -46,7 +59,16 @@ export default function App() {
   const handleSwitchRole = (newRole: UserRole) => {
     setCurrentRole(newRole);
     if (DEMO_USERS[newRole]) {
-      setCurrentUser(DEMO_USERS[newRole]);
+      const userObj = { ...DEMO_USERS[newRole] };
+      try {
+        const saved = localStorage.getItem(`metavox_avatar_${userObj.uid}`);
+        if (saved) {
+          userObj.photoURL = saved;
+        }
+      } catch {
+        // ignore
+      }
+      setCurrentUser(userObj);
     }
     if (newRole === 'owner') {
       showToast('已切换至 [Owner 老板/合伙人] 视角：开放高阶审计及全权权限', 'shield_person');
@@ -60,6 +82,22 @@ export default function App() {
     } else {
       showToast('已切换至 [Client 客资端] 视角：可填写咨询并查看已批准报告', 'person');
       setCurrentView('report');
+    }
+  };
+
+  const handleUpdateAvatar = (newPhotoURL: string) => {
+    if (currentUser) {
+      const updatedUser = { ...currentUser, photoURL: newPhotoURL };
+      setCurrentUser(updatedUser);
+      if (DEMO_USERS[currentRole]) {
+        DEMO_USERS[currentRole].photoURL = newPhotoURL;
+      }
+      try {
+        localStorage.setItem(`metavox_avatar_${currentUser.uid}`, newPhotoURL);
+      } catch {
+        // ignore
+      }
+      showToast('头像已更新成功！', 'add_photo_alternate');
     }
   };
 
@@ -224,6 +262,7 @@ export default function App() {
         onNavigate={handleNavigate}
         onOpenAuth={() => setAuthModalOpen(true)}
         onSwitchRole={handleSwitchRole}
+        onUpdateAvatar={handleUpdateAvatar}
         onLogout={() => {
           setCurrentUser(null);
           setCurrentRole('client');

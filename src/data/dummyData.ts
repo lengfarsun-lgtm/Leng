@@ -7,7 +7,7 @@ export const DEMO_USERS: Record<string, AppUser> = {
     email: 'raymond.tang@metavox.my',
     displayName: 'Master Raymond Tang (郑道长 · Owner)',
     role: 'owner',
-    photoURL: '/src/assets/images/master_avatar_1790670431010.jpg',
+    photoURL: '/master_avatar.jpg',
     isDemo: true,
   },
   management: {
@@ -15,7 +15,7 @@ export const DEMO_USERS: Record<string, AppUser> = {
     email: 'master.lam@metavox.my',
     displayName: 'Master Lam (林大师 · Management)',
     role: 'management',
-    photoURL: '/src/assets/images/master_avatar_1790670431010.jpg',
+    photoURL: '/master_avatar.jpg',
     isDemo: true,
   },
   logistic: {

@@ -47,7 +47,7 @@ export const ManagementDashboard: React.FC<ManagementDashboardProps> = ({
         <div className="flex items-center gap-space-sm">
           <div className="relative shrink-0">
             <img
-              src="/src/assets/images/master_avatar_1790670431010.jpg"
+              src="/master_avatar.jpg"
               alt="Master Raymond Tang"
               className="w-11 h-11 rounded-full object-cover shadow-xs ring-2 ring-accent-gold-bright"
               referrerPolicy="no-referrer"

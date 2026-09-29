@@ -180,7 +180,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
                 <img
                   className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-accent-gold-bright"
                   alt="Master Raymond Tang"
-                  src="/src/assets/images/master_avatar_1790670431010.jpg"
+                  src="/master_avatar.jpg"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
@@ -631,7 +631,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
             <div className="relative shrink-0 group">
               <div className="w-56 md:w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-xl ring-2 ring-accent-gold-bright/60">
                 <img
-                  src="/src/assets/images/master_portrait_1790670416622.jpg"
+                  src="/master_portrait.jpg"
                   alt="Master Raymond Tang 郑道长"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
