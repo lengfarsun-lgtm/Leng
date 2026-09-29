@@ -7,7 +7,7 @@ export const DEMO_USERS: Record<string, AppUser> = {
     email: 'raymond.tang@metavox.my',
     displayName: 'Master Raymond Tang (郑道长 · Owner)',
     role: 'owner',
-    photoURL: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCVcWmIH0wIzshjSWVQAIquI1FR8ABRYnQTRI8nzr5FZb_ka5vGu19I_8epcRr7Zfd1ty46_-Mm7E6OwGC-ySuZ9Cvg8p8NP3t-6zOEEj-iwde3olExeGcTxwkYCJycvfJt3vYQoTRSh0OidDocgET8kMT_nFHt3hUbb5NRDzh612Kd34FtVyyn8vhBQZ4k6GHXKfRRtWCghtmLCMPy51Z2yivg8jqm0s2Qx193nMpPv19IegisXZldMw',
+    photoURL: '/src/assets/images/master_avatar_1790670431010.jpg',
     isDemo: true,
   },
   management: {
@@ -15,7 +15,7 @@ export const DEMO_USERS: Record<string, AppUser> = {
     email: 'master.lam@metavox.my',
     displayName: 'Master Lam (林大师 · Management)',
     role: 'management',
-    photoURL: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB2S4Yzg2eaeBsNGq_-0jm2rH9uvuLdVHKuekPSyr_o1NtpJKFCGt0G3VrXl3tfzSyBggVv2U3HDkYoFyEhtjboHWwC9ipyizvNUfvyln60FsSLbnDGZT1XO9ROvMKudGK-qmKvdAoEdeVVenbYpis-I62lrDPpAJF_pMPM26_ccxQtz7S1B3UufoEHglXRLJ1s6SneXGRl8RHQwDwkp-ShJ-kDnEDX80n3_sY0ON5UeQP1PYvcLPtAww',
+    photoURL: '/src/assets/images/master_avatar_1790670431010.jpg',
     isDemo: true,
   },
   logistic: {

@@ -19,7 +19,10 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
   const [fullName, setFullName] = useState('Tan Hui Min 陈慧敏');
   const [chineseName, setChineseName] = useState('慧敏');
   const [gender, setGender] = useState<'male' | 'female'>('female');
-  const [locationKey, setLocationKey] = useState('KL');
+  // Birth place & astronomical longitude fill-in states
+  const [birthPlace, setBirthPlace] = useState('吉隆坡 / 雪兰莪 (Kuala Lumpur / Selangor)');
+  const [astronomicalLongitude, setAstronomicalLongitude] = useState("101°41' E");
+  const [solarOffsetMinutes, setSolarOffsetMinutes] = useState(-29);
   // Calendar input type: solar (阳历/公历 - 自动转换阴历) or lunar (直接输入阴历/农历)
   const [calendarType, setCalendarType] = useState<'solar' | 'lunar'>('solar');
   const [solarYear, setSolarYear] = useState(1990);
@@ -43,8 +46,59 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
   const [reportLang, setReportLang] = useState<'zh' | 'en' | 'bilingual'>('bilingual');
   const [pdpaConsent, setPdpaConsent] = useState(true);
 
-  const selectedLocation = MALAYSIAN_LOCATIONS[locationKey] || MALAYSIAN_LOCATIONS['KL'];
   const selectedShichen = SHICHEN_MAP[shichenKey] || SHICHEN_MAP['wu'];
+
+  // Smart birth place text input handler
+  const handleBirthPlaceInput = (val: string) => {
+    setBirthPlace(val);
+    const lower = val.toLowerCase();
+    if (lower.includes('槟城') || lower.includes('penang')) {
+      setSolarOffsetMinutes(-34);
+      setAstronomicalLongitude("100°19' E");
+    } else if (lower.includes('新山') || lower.includes('johor') || lower.includes('jb')) {
+      setSolarOffsetMinutes(-21);
+      setAstronomicalLongitude("103°45' E");
+    } else if (lower.includes('怡保') || lower.includes('ipoh') || lower.includes('霹雳') || lower.includes('perak')) {
+      setSolarOffsetMinutes(-31);
+      setAstronomicalLongitude("101°05' E");
+    } else if (lower.includes('马六甲') || lower.includes('melaka') || lower.includes('malacca')) {
+      setSolarOffsetMinutes(-27);
+      setAstronomicalLongitude("102°15' E");
+    } else if (lower.includes('古晋') || lower.includes('kuching') || lower.includes('砂拉越') || lower.includes('sarawak')) {
+      setSolarOffsetMinutes(-6);
+      setAstronomicalLongitude("110°20' E");
+    } else if (lower.includes('亚庇') || lower.includes('kinabalu') || lower.includes('沙巴') || lower.includes('sabah')) {
+      setSolarOffsetMinutes(16);
+      setAstronomicalLongitude("116°04' E");
+    } else if (lower.includes('新加坡') || lower.includes('singapore')) {
+      setSolarOffsetMinutes(-20);
+      setAstronomicalLongitude("103°51' E");
+    } else if (
+      lower.includes('吉隆坡') ||
+      lower.includes('kuala lumpur') ||
+      lower.includes('kl') ||
+      lower.includes('雪兰莪') ||
+      lower.includes('selangor')
+    ) {
+      setSolarOffsetMinutes(-29);
+      setAstronomicalLongitude("101°41' E");
+    }
+  };
+
+  const handleSelectPresetLocation = (key: string) => {
+    const loc = MALAYSIAN_LOCATIONS[key];
+    if (!loc) return;
+    setBirthPlace(loc.nameZh);
+    setSolarOffsetMinutes(loc.offsetMinutes);
+    if (key === 'KL') setAstronomicalLongitude("101°41' E");
+    else if (key === 'PEN') setAstronomicalLongitude("100°19' E");
+    else if (key === 'JHB') setAstronomicalLongitude("103°45' E");
+    else if (key === 'IPH') setAstronomicalLongitude("101°05' E");
+    else if (key === 'MLK') setAstronomicalLongitude("102°15' E");
+    else if (key === 'KCH') setAstronomicalLongitude("110°20' E");
+    else if (key === 'BKI') setAstronomicalLongitude("116°04' E");
+    else if (key === 'SIN') setAstronomicalLongitude("103°51' E");
+  };
 
   // Toggle problem categories
   const toggleCategory = (cat: string) => {
@@ -82,9 +136,10 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
       '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十',
     ];
 
-    const offsetMin = selectedLocation.offsetMinutes;
+    const offsetMin = solarOffsetMinutes;
     const sign = offsetMin >= 0 ? '+' : '';
-    const solarAdjustedStr = `11:01 AM (${selectedLocation.nameZh.split(' ')[0]}当地视太阳正中 · 时差 ${sign}${offsetMin}分)`;
+    const locDisplayName = birthPlace.trim() || '当地';
+    const solarAdjustedStr = `11:01 AM (${locDisplayName.split(' ')[0]}当地视太阳正中 · 经度 ${astronomicalLongitude} · 时差 ${sign}${offsetMin}分)`;
 
     if (calendarType === 'solar') {
       const clampedDay = Math.min(solarDay, maxSolarDays);
@@ -157,7 +212,9 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
     lunarMonth,
     isLeapMonth,
     lunarDay,
-    selectedLocation,
+    birthPlace,
+    astronomicalLongitude,
+    solarOffsetMinutes,
     selectedShichen,
     shichenKey,
   ]);
@@ -180,8 +237,8 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
       fullName,
       chineseName,
       gender,
-      birthPlace: selectedLocation.nameZh,
-      solarOffsetMinutes: selectedLocation.offsetMinutes,
+      birthPlace,
+      solarOffsetMinutes,
       lunarYear: finalLunarYear,
       lunarMonth: finalLunarMonth,
       isLeapMonth: finalIsLeap,
@@ -422,39 +479,111 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
               </div>
             </div>
 
-            {/* Birthplace & Solar Offset */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs">
-              <div className="flex flex-col gap-1 md:col-span-2">
-                <label className="font-label-sm text-label-sm text-text-primary font-semibold flex items-center gap-1">
-                  <span>出生地与真太阳时调整 Birth Place & Astronomical Longitude</span>
-                  <span className="text-element-fire">*</span>
+            {/* Birthplace & Solar Offset (Fill-in & True Solar Time Adjustment) */}
+            <div className="flex flex-col gap-space-sm pt-space-xs">
+              <div className="flex flex-col gap-1">
+                <label className="font-label-sm text-label-sm text-text-primary font-semibold flex flex-wrap items-center justify-between gap-1">
+                  <span className="flex items-center gap-1">
+                    <span>出生地与真太阳时调整 Birth Place & Astronomical Longitude</span>
+                    <span className="text-element-fire">*</span>
+                  </span>
+                  <span className="text-xs text-element-earth font-medium">
+                    可自由键入出生城镇或医院，系统自动依经度校正真太阳时
+                  </span>
                 </label>
-                <div className="relative">
-                  <select
-                    value={locationKey}
-                    onChange={(e) => setLocationKey(e.target.value)}
-                    className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none cursor-pointer border border-transparent focus:border-element-fire"
-                  >
-                    {Object.entries(MALAYSIAN_LOCATIONS).map(([k, loc]) => (
-                      <option key={k} value={k}>
-                        {loc.nameZh} · {loc.desc}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="material-symbols-outlined absolute right-space-md top-3.5 pointer-events-none text-text-muted">
-                    arrow_drop_down
+
+                {/* Main Fill-in Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-sm items-start">
+                  {/* Text Input for Birth Place */}
+                  <div className="lg:col-span-6 relative">
+                    <span className="material-symbols-outlined absolute left-space-md top-3.5 text-element-fire pointer-events-none text-xl">
+                      edit_location
+                    </span>
+                    <input
+                      type="text"
+                      value={birthPlace}
+                      onChange={(e) => handleBirthPlaceInput(e.target.value)}
+                      placeholder="请填写出生地（如：吉隆坡、槟城、柔佛新山、怡保、马六甲等）"
+                      className="w-full h-12 pl-11 pr-space-md rounded-xl bg-surface-container-low text-text-primary font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest border border-border-subtle focus:border-element-fire shadow-2xs transition-all"
+                      required
+                    />
+                    <span className="font-label-sm text-label-sm text-text-muted text-[11px] mt-1 block">
+                      支持输入马来西亚各州属城镇、医院或海外城市，输入时自动匹配天文参数
+                    </span>
+                  </div>
+
+                  {/* Astronomical Longitude Input */}
+                  <div className="lg:col-span-3">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={astronomicalLongitude}
+                        onChange={(e) => setAstronomicalLongitude(e.target.value)}
+                        placeholder="天文经度 (如 101°41' E)"
+                        className="w-full h-12 px-space-md rounded-xl bg-surface-container-low text-text-primary font-mono text-xs focus:outline-none focus:bg-surface-container-lowest border border-border-subtle focus:border-element-fire shadow-2xs"
+                      />
+                    </div>
+                    <span className="font-label-sm text-label-sm text-text-muted text-[11px] mt-1 block">
+                      当地天文经度 Astronomical Longitude
+                    </span>
+                  </div>
+
+                  {/* True Solar Time Offset Input */}
+                  <div className="lg:col-span-3">
+                    <div className="flex items-center h-12 px-space-md rounded-xl bg-surface-container-low border border-border-subtle focus-within:border-element-fire shadow-2xs">
+                      <span className="text-xs text-text-muted mr-1.5 shrink-0">时差:</span>
+                      <input
+                        type="number"
+                        value={solarOffsetMinutes}
+                        onChange={(e) => setSolarOffsetMinutes(parseInt(e.target.value, 10) || 0)}
+                        className="w-full text-sm font-mono font-bold text-element-fire bg-transparent focus:outline-none"
+                      />
+                      <span className="text-xs font-semibold text-text-muted shrink-0">分钟 (min)</span>
+                    </div>
+                    <span className="font-label-sm text-label-sm text-text-muted text-[11px] mt-1 block">
+                      真太阳时差 (True Solar Time Offset)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quick-fill preset chips */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  <span className="text-xs text-text-muted font-medium flex items-center gap-1 mr-1">
+                    <span className="material-symbols-outlined text-xs text-element-earth">touch_app</span>
+                    快速填写：
+                  </span>
+                  {Object.entries(MALAYSIAN_LOCATIONS).map(([k, loc]) => {
+                    const isSelected = birthPlace.includes(loc.nameZh.split(' ')[0]);
+                    return (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => handleSelectPresetLocation(k)}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer border flex items-center gap-1 ${
+                          isSelected
+                            ? 'bg-element-fire/15 text-element-fire border-element-fire/50 font-bold shadow-2xs'
+                            : 'bg-surface-container-low text-on-surface-variant border-border-subtle/70 hover:bg-surface-container hover:text-text-primary'
+                        }`}
+                      >
+                        <span>{loc.nameZh.split(' ')[0]}</span>
+                        <span className="text-[10px] opacity-75 font-mono">
+                          ({loc.offsetMinutes >= 0 ? `+${loc.offsetMinutes}` : loc.offsetMinutes}分)
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Informational Callout */}
+                <div className="flex items-center gap-2 p-2.5 bg-surface-container-low/70 rounded-xl border border-border-subtle/50 text-xs text-on-surface-variant mt-1">
+                  <span className="material-symbols-outlined text-element-fire text-base shrink-0">
+                    timelapse
+                  </span>
+                  <span>
+                    <strong>真太阳时校准原理：</strong>
+                    马来西亚国家标准时间统一采用 UTC+8 (东经120°)。依据您填写的出生地经度（如吉隆坡东经101°41'），视太阳过中天比标准时间晚约 29 分钟。系统将精准校准，杜绝早晚子时与时辰交界误判。
                   </span>
                 </div>
-              </div>
-
-              <div className="flex flex-col justify-center bg-surface-container-low p-space-md rounded-xl border border-border-subtle/50">
-                <span className="font-label-sm text-label-sm text-element-fire font-semibold flex items-center gap-1.5 text-xs">
-                  <span className="material-symbols-outlined text-base">timelapse</span>
-                  自动经度时差修正 (Auto Correction)
-                </span>
-                <p className="font-label-sm text-label-sm text-on-surface-variant pt-1 leading-snug text-xs">
-                  马来西亚国家标准时间固定采用 UTC+8，系统将依据选定地域经度自动校正至“真太阳时 (True Solar Time)”，确保子午卯酉时柱精准无误。
-                </p>
               </div>
             </div>
           </section>
@@ -1133,15 +1262,16 @@ export const IntakeForm: React.FC<IntakeFormProps> = ({ onSubmit, onSaveDraft })
               <div className="flex items-center gap-space-md bg-surface-container-low p-space-sm rounded-xl border border-border-subtle/50">
                 <img
                   alt="Master Kenneth Tan"
-                  className="w-14 h-14 rounded-full object-cover shadow-sm ring-1 ring-accent-gold-bright"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2S4Yzg2eaeBsNGq_-0jm2rH9uvuLdVHKuekPSyr_o1NtpJKFCGt0G3VrXl3tfzSyBggVv2U3HDkYoFyEhtjboHWwC9ipyizvNUfvyln60FsSLbnDGZT1XO9ROvMKudGK-qmKvdAoEdeVVenbYpis-I62lrDPpAJF_pMPM26_ccxQtz7S1B3UufoEHglXRLJ1s6SneXGRl8RHQwDwkp-ShJ-kDnEDX80n3_sY0ON5UeQP1PYvcLPtAww"
+                  className="w-14 h-14 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
+                  src="/src/assets/images/master_avatar_1790670431010.jpg"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col min-w-0">
                   <span className="font-label-sm text-label-sm text-text-muted text-[10px]">
                     CHIEF CONSULTANT ASSIGNMENT
                   </span>
                   <span className="font-label-md text-label-md font-bold text-text-primary truncate">
-                    Master Kenneth Tan 陈敬轩 大师
+                    Master Raymond Tang (郑道长 · 首席勘测大师)
                   </span>
                   <span className="font-label-sm text-label-sm text-element-earth text-xs">
                     三元玄空飞星第24代传人 · METAVOX 首席顾问

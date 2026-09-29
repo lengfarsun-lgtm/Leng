@@ -45,8 +45,16 @@ export const ManagementDashboard: React.FC<ManagementDashboardProps> = ({
       {/* Portal Control Sub-Header & Role Switcher Bar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md p-space-md bg-surface-container-low rounded-2xl shadow-xs border border-border-subtle">
         <div className="flex items-center gap-space-sm">
-          <div className="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-xs">
-            <span className="material-symbols-outlined text-xl">admin_panel_settings</span>
+          <div className="relative shrink-0">
+            <img
+              src="/src/assets/images/master_avatar_1790670431010.jpg"
+              alt="Master Raymond Tang"
+              className="w-11 h-11 rounded-full object-cover shadow-xs ring-2 ring-accent-gold-bright"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-element-fire text-on-primary flex items-center justify-center text-[10px]">
+              <span className="material-symbols-outlined text-[10px]">verified</span>
+            </div>
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-space-xs">
@@ -58,7 +66,7 @@ export const ManagementDashboard: React.FC<ManagementDashboardProps> = ({
               </span>
             </div>
             <p className="font-body-sm text-body-sm text-on-surface-variant text-xs">
-              Owner, Master Geomancer & Logistics Execution Workspace · PRD Sec 2 & 5.6-5.8
+              Master Raymond Tang (郑道长), Management & Logistics Workspace · PRD Sec 2 & 5.6-5.8
             </p>
           </div>
         </div>

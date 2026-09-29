@@ -155,6 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
                     currentUser.photoURL ||
                     'https://lh3.googleusercontent.com/aida-public/AB6AXuCviCDOjYzI5PCFLtxl5H5AFx83iSDIOmHZBJQ4cW6nR96_1uSBT7TkWNsSbteOx2zJruHcuvkfg_VW7ADmjYvCIK2aP0jByDnPZ5NAaBfc1Gbga9gHnRc2oIeqKH2szmrz1SAWX8tffCvClYNSpomjFUh-SjrPe_uGC5ROyomTcxvjIBhVjFk4c9icvJPqhAJhaNQ5a_yjn0zLjZlLk9gbSdQaPUp5_4w24UsPkxlMrgt6xCUh_DRBXg'
                   }
+                  referrerPolicy="no-referrer"
                 />
                 <span className="material-symbols-outlined text-on-surface-variant text-base">
                   expand_more
@@ -178,6 +179,7 @@ export const Header: React.FC<HeaderProps> = ({
                     alt={currentUser.displayName}
                     className="w-10 h-10 rounded-full object-cover"
                     src={currentUser.photoURL}
+                    referrerPolicy="no-referrer"
                   />
                   <div className="flex flex-col min-w-0">
                     <span className="font-label-md text-label-md font-bold text-text-primary truncate">

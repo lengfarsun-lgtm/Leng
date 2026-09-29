@@ -787,17 +787,26 @@ export const BaziReportView: React.FC<BaziReportViewProps> = ({ report, onPrint 
         {/* Master Stamp, Verification Seal & Statutory Disclaimer */}
         <section className="w-full bg-surface-container-low/60 rounded-2xl p-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md mt-space-sm border border-border-subtle">
           <div className="flex items-center gap-space-md">
-            <div className="w-16 h-16 rounded-full bg-surface-container-lowest p-1 shadow-sm shrink-0 flex items-center justify-center border border-border-subtle">
+            <div className="relative shrink-0">
               <img
-                alt="Master Cinnabar Seal"
-                className="w-14 h-14 rounded-full object-contain"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqam0W-zRTj4-fCuBG9jIhappKI849zMAEDZ7khiaIcPOM3qtC91Lm30N8NRYh1EFzjWbE5Tj4IMbfjigk7BKDqRVEsAyLmS5IZ73XqkVsefxef2coOiERBCFEe8keBhcVBoAnWsJgP_D-a44MqZERdo2jkoT-s0Pu8adYfypeoHExe7d9pTIqRjxWDWbY3AW9k5aOPyb7qM_UCYwtKzw1EcXxNZdcgfSEghiiig5iTrng-mJHSWirGw"
+                alt="Master Raymond Tang"
+                className="w-16 h-16 rounded-full object-cover shadow-sm ring-2 ring-accent-gold-bright"
+                src="/src/assets/images/master_avatar_1790670431010.jpg"
+                referrerPolicy="no-referrer"
               />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-surface-container-lowest p-0.5 shadow-sm border border-border-subtle">
+                <img
+                  alt="Master Cinnabar Seal"
+                  className="w-full h-full rounded-full object-contain"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqam0W-zRTj4-fCuBG9jIhappKI849zMAEDZ7khiaIcPOM3qtC91Lm30N8NRYh1EFzjWbE5Tj4IMbfjigk7BKDqRVEsAyLmS5IZ73XqkVsefxef2coOiERBCFEe8keBhcVBoAnWsJgP_D-a44MqZERdo2jkoT-s0Pu8adYfypeoHExe7d9pTIqRjxWDWbY3AW9k5aOPyb7qM_UCYwtKzw1EcXxNZdcgfSEghiiig5iTrng-mJHSWirGw"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <span className="font-headline-sm text-headline-sm font-bold text-text-primary">
-                  {report.approvedBy || '陈清禄 执业风水大师 签发'}
+                  {report.approvedBy || 'Master Raymond Tang (郑道长 · 执业大师签发)'}
                 </span>
                 <span className="px-2 py-0.5 rounded bg-surface-container-highest font-label-sm text-label-sm text-on-surface text-xs font-semibold">
                   {report.masterLicense || 'Lic. MY-FS-8812'}

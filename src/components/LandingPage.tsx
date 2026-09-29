@@ -178,9 +178,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
               {/* Master Verification Signature Tag */}
               <div className="flex items-center gap-space-sm pt-space-xs border-t border-white/10">
                 <img
-                  className="w-11 h-11 rounded-full object-cover shadow-md ring-2 ring-accent-gold-bright/40"
+                  className="w-12 h-12 rounded-full object-cover shadow-md ring-2 ring-accent-gold-bright"
                   alt="Master Raymond Tang"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVcWmIH0wIzshjSWVQAIquI1FR8ABRYnQTRI8nzr5FZb_ka5vGu19I_8epcRr7Zfd1ty46_-Mm7E6OwGC-ySuZ9Cvg8p8NP3t-6zOEEj-iwde3olExeGcTxwkYCJycvfJt3vYQoTRSh0OidDocgET8kMT_nFHt3hUbb5NRDzh612Kd34FtVyyn8vhBQZ4k6GHXKfRRtWCghtmLCMPy51Z2yivg8jqm0s2Qx193nMpPv19IegisXZldMw"
+                  src="/src/assets/images/master_avatar_1790670431010.jpg"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
                   <span className="font-label-md text-label-md text-surface-base font-semibold">
@@ -622,6 +623,58 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStartReading, onExpl
               <span className="material-symbols-outlined text-3xl text-element-wood mb-2">balance</span>
               <span className="font-label-md text-label-md text-text-primary font-semibold">Transparent Pricing</span>
               <span className="font-label-sm text-label-sm text-on-surface-variant text-xs">No Hidden Religious Coercion</span>
+            </div>
+          </div>
+
+          {/* Master Geomancer Authority Showcase Feature */}
+          <div className="rounded-3xl bg-gradient-to-br from-surface-warm via-surface-base to-surface-container-high/40 p-space-lg md:p-space-xl border border-border-subtle shadow-md flex flex-col lg:flex-row items-center gap-space-xl">
+            <div className="relative shrink-0 group">
+              <div className="w-56 md:w-64 aspect-[3/4] rounded-2xl overflow-hidden shadow-xl ring-2 ring-accent-gold-bright/60">
+                <img
+                  src="/src/assets/images/master_portrait_1790670416622.jpg"
+                  alt="Master Raymond Tang 郑道长"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="absolute -bottom-3 -right-3 bg-element-fire text-on-primary px-3 py-1 rounded-full text-xs font-bold shadow-md flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm">verified</span>
+                执业风水名师
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-space-sm flex-1 text-left">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full bg-accent-gold-bright/20 text-secondary font-label-sm text-label-sm font-bold text-xs uppercase tracking-wider">
+                  Lead Geomancy Consultant · 领衔大师
+                </span>
+                <span className="text-text-muted text-xs font-mono">
+                  San Yuan Xuan Kong Heritage · 三元玄空传人
+                </span>
+              </div>
+
+              <h3 className="font-headline-md text-headline-sm md:text-headline-md text-text-primary font-bold">
+                Master Raymond Tang (郑道长)
+              </h3>
+
+              <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                马来西亚易经风水协会理事、三元玄空飞星正宗传承。精研三元九运离火大局、真太阳时天文学经度推算及当代高层阳宅纳气理气。每一份八字命盘与阳宅方案均经过 Gemini 算法深度推演与大师亲笔复核双轨把关，确保合乎周易天理与生活实用。
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 border-t border-border-subtle/60 text-xs">
+                <div className="flex items-center gap-1.5 text-text-primary font-medium">
+                  <span className="material-symbols-outlined text-element-fire text-base">military_tech</span>
+                  <span>执业风水勘测 25+ 年</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-text-primary font-medium">
+                  <span className="material-symbols-outlined text-element-earth text-base">explore</span>
+                  <span>三元玄空罗盘精准定向</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-text-primary font-medium">
+                  <span className="material-symbols-outlined text-element-water text-base">task_alt</span>
+                  <span>吉隆坡及全马逾千企业客户</span>
+                </div>
+              </div>
             </div>
           </div>
 
